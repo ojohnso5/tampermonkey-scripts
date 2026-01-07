@@ -1,0 +1,106 @@
+{
+  "definition": {
+    "$schema": "https://schema.management.azure.com/providers/Microsoft.Logic/schemas/2016-06-01/workflowdefinition.json#",
+    "contentVersion": "1.0.0.0",
+    "parameters": {},
+    "triggers": {
+      "When_a_new_email_arrives": {
+        "type": "ApiConnectionWebhook",
+        "inputs": {
+          "host": {
+            "connection": {
+              "name": "@parameters('$connections')['office365']['connectionId']"
+            }
+          },
+          "path": "/Mail/OnNewEmail",
+          "queries": {
+            "folderPath": "Inbox",
+            "importance": "Any",
+            "fetchOnlyWithAttachment": false,
+            "includeAttachments": false,
+            "subjectFilter": "tracking,shipped,delivery"
+          }
+        }
+      }
+    },
+    "actions": {
+      "Extract_Tracking_Info": {
+        "type": "Compose",
+        "inputs": "@body('When_a_new_email_arrives')",
+        "runAfter": {}
+      },
+      "Initialize_Tracking_Number": {
+        "type": "InitializeVariable",
+        "inputs": {
+          "variables": [
+            {
+              "name": "TrackingNumber",
+              "type": "string",
+              "value": "@{if(contains(body('When_a_new_email_arrives'), '1Z'), substring(body('When_a_new_email_arrives'), indexOf(body('When_a_new_email_arrives'), '1Z'), 18), if(contains(body('When_a_new_email_arrives'), '794'), substring(body('When_a_new_email_arrives'), indexOf(body('When_a_new_email_arrives'), '794'), 12), 'Not Found'))}"
+            }
+          ]
+        },
+        "runAfter": {
+          "Extract_Tracking_Info": ["Succeeded"]
+        }
+      },
+      "Add_row_to_Excel": {
+        "type": "ApiConnection",
+        "inputs": {
+          "host": {
+            "connection": {
+              "name": "@parameters('$connections')['excelonline']['connectionId']"
+            }
+          },
+          "method": "post",
+          "path": "/datasets/@{encodeURIComponent(encodeURIComponent('YOUR_ONEDRIVE_ID'))}/tables/@{encodeURIComponent(encodeURIComponent('Table1'))}/items",
+          "body": {
+            "Date": "@{utcNow()}",
+            "From": "@{triggerOutputs()?['body/from']}",
+            "Subject": "@{triggerOutputs()?['body/subject']}",
+            "TrackingInfo": "@{variables('TrackingNumber')}",
+            "Status": "Pending Review"
+          }
+        },
+        "runAfter": {
+          "Initialize_Tracking_Number": ["Succeeded"]
+        }
+      },
+      "Send_mobile_notification": {
+        "type": "ApiConnection",
+        "inputs": {
+          "host": {
+            "connection": {
+              "name": "@parameters('$connections')['mobilepush']['connectionId']"
+            }
+          },
+          "method": "post",
+          "path": "/send",
+          "body": {
+            "text": "New tracking: @{variables('TrackingNumber')} from @{triggerOutputs()?['body/from']}"
+          }
+        },
+        "runAfter": {
+          "Add_row_to_Excel": ["Succeeded"]
+        }
+      }
+    },
+    "outputs": {}
+  },
+  "parameters": {
+    "$connections": {
+      "value": {
+        "office365": {
+          "connectionId": "/subscriptions/{subscription-id}/resourceGroups/{resource-group}/providers/Microsoft.Web/connections/office365",
+          "connectionName": "office365",
+          "id": "/subscriptions/{subscription-id}/providers/Microsoft.Web/locations/{location}/managedApis/office365"
+        },
+        "excelonline": {
+          "connectionId": "/subscriptions/{subscription-id}/resourceGroups/{resource-group}/providers/Microsoft.Web/connections/excelonline",
+          "connectionName": "excelonline",
+          "id": "/subscriptions/{subscription-id}/providers/Microsoft.Web/locations/{location}/managedApis/excelonline"
+        }
+      }
+    }
+  }
+}
