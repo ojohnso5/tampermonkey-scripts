@@ -138,7 +138,92 @@ function networkNodes(R, cx, cy, count, seed) {
   return out;
 }
 
+/* ================================================================
+   Flat (equirectangular) projection, for world-map artwork.
+   ================================================================ */
+
+/** Longitude/latitude to a point on a flat W x H map. */
+function equirect(lon, lat, W, H) {
+  return [((lon + 180) / 360) * W, ((90 - lat) / 180) * H];
+}
+
+/** A continent polygon as an SVG path on a flat map. */
+function polyEquirect(points, W, H) {
+  return points.map((p, i) => {
+    const [x, y] = equirect(p[0], p[1], W, H);
+    return (i === 0 ? 'M' : 'L') + x.toFixed(1) + ' ' + y.toFixed(1);
+  }).join(' ') + ' Z';
+}
+
+/** Even-odd point-in-polygon test on flat map coordinates. */
+function pointInPoly(x, y, poly, W, H) {
+  let inside = false;
+  for (let i = 0, j = poly.length - 1; i < poly.length; j = i++) {
+    const [xi, yi] = equirect(poly[i][0], poly[i][1], W, H);
+    const [xj, yj] = equirect(poly[j][0], poly[j][1], W, H);
+    if (((yi > y) !== (yj > y)) && (x < (xj - xi) * (y - yi) / (yj - yi) + xi)) inside = !inside;
+  }
+  return inside;
+}
+
+/**
+ * A dot-matrix world map: a grid of dots that fall inside the continents.
+ * This is the premium treatment used for background texture — it reads as
+ * a world map without ever competing with the foreground.
+ */
+function dotWorld(W, H, step, r, polys) {
+  const list = polys || [NORTH_AMERICA, SOUTH_AMERICA, GREENLAND, CENTRAL_AMERICA, CARIBBEAN];
+  const out = [];
+  for (let y = step / 2; y < H; y += step) {
+    for (let x = step / 2; x < W; x += step) {
+      let hit = false;
+      for (const poly of list) {
+        if (pointInPoly(x, y, poly, W, H)) { hit = true; break; }
+      }
+      if (hit) out.push(`<circle cx="${x.toFixed(1)}" cy="${y.toFixed(1)}" r="${r}"/>`);
+    }
+  }
+  return out;
+}
+
+
+/* ------------------------------------------------------------------
+   Simplified outlines for the rest of the world. These are used for the
+   flat world-map artwork only. The crest's globe keeps the Americas,
+   because that is the hemisphere the brand is centred on.
+   ------------------------------------------------------------------ */
+const EURASIA = [
+  [-10,36],[-9,43],[-2,48],[2,51],[8,54],[12,55],[10,58],[18,56],[21,60],[28,60],
+  [24,66],[30,70],[44,68],[55,70],[70,73],[85,74],[100,77],[113,74],[128,73],[142,72],
+  [160,70],[170,66],[178,64],[170,60],[162,58],[155,52],[142,46],[135,43],[130,38],[126,35],
+  [121,31],[117,24],[110,20],[105,10],[100,6],[98,12],[94,18],[89,22],[80,15],[77,8],
+  [72,20],[67,24],[60,25],[57,20],[52,16],[48,13],[43,13],[38,18],[35,29],[34,36],[28,36],
+  [22,37],[15,38],[12,45],[5,43],[0,39]
+];
+
+const AFRICA = [
+  [-17,37],[-10,35],[-5,36],[3,37],[10,34],[20,32],[25,32],[32,31],[35,27],[39,15],
+  [43,12],[51,12],[48,5],[42,-2],[40,-10],[36,-18],[33,-26],[26,-34],[19,-35],[15,-27],
+  [12,-18],[9,-1],[2,5],[-5,5],[-12,8],[-17,15]
+];
+
+const AUSTRALIA = [
+  [113,-22],[114,-28],[118,-34],[125,-32],[132,-32],[137,-35],[141,-38],[147,-38],[150,-35],
+  [153,-28],[146,-19],[142,-11],[136,-12],[130,-11],[125,-14],[121,-18]
+];
+
+const GREENLAND_EAST = GREENLAND;
+
+/**
+ * Every continent, for full-world map artwork.
+ */
+const WORLD = [
+  NORTH_AMERICA, SOUTH_AMERICA, GREENLAND_EAST, CENTRAL_AMERICA, CARIBBEAN,
+  EURASIA, AFRICA, AUSTRALIA
+];
 module.exports = {
+  EURASIA, AFRICA, AUSTRALIA, WORLD,
   project, polyPath, graticule, limbPoints, networkArcs, networkNodes,
+  equirect, polyEquirect, pointInPoly, dotWorld,
   NORTH_AMERICA, SOUTH_AMERICA, GREENLAND, CENTRAL_AMERICA, CARIBBEAN
 };

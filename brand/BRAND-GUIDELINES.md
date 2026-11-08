@@ -247,8 +247,25 @@ line; three or more split into two balanced lines.
   runtime badge lands, and covering it costs clicks.
 
 ### End screen (1920×1080)
-`out/end-screen.svg` + PNG. Crest centre, two video placeholders, subscribe
-bar, handle. Dark and restrained — one accent colour only.
+`out/end-screen.svg` + `out/end-screen-1920x1080.png`.
+
+| Zone | Content |
+|---|---|
+| Background | Midnight black, red atmospheric bloom, blue energy currents, and a **dotted world map** across the full frame |
+| Centre | The JSA superhero-and-globe crest, large, with the wordmark and descriptor beneath |
+| Left | `NEXT VIDEO` placeholder with film perforations, a red play control and gold corner brackets |
+| Right | `RECOMMENDED` placeholder, same treatment |
+| Bottom centre | Subscribe bar — small crest, wordmark, handle, red SUBSCRIBE button and a bell |
+
+The dotted world map is generated from simplified continent outlines
+(`src/geo.js`) as a grid of dots that fall inside each landmass — 2,183 dots
+at the default spacing. It reads unmistakably as a world map while staying
+quiet enough never to compete with the foreground. The crest's own globe still
+shows the Americas only, because that is the hemisphere the brand is centred
+on.
+
+The placeholders are deliberately labelled and framed, so the template is
+self-documenting: drop a clip into each frame and the end screen is done.
 
 ### Intro animation — 5.0 s, nine scenes
 
