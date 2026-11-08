@@ -1,0 +1,40 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 2560 1440" width="2560" height="1440" role="img" aria-label="Justice Society of Activism channel banner">
+  <defs>
+    <linearGradient id="bg" x1="0" y1="0" x2="1" y2="1"><stop offset="0" stop-color="#0a0a0c"/><stop offset=".55" stop-color="#171320"/><stop offset="1" stop-color="#0a0a0c"/></linearGradient>
+    <radialGradient id="glow" cx=".74" cy=".45" r=".5"><stop offset="0" stop-color="#ef233c" stop-opacity=".38"/><stop offset="1" stop-color="#ef233c" stop-opacity="0"/></radialGradient>
+    <radialGradient id="glow2" cx=".12" cy=".75" r=".5"><stop offset="0" stop-color="#ffb703" stop-opacity=".28"/><stop offset="1" stop-color="#ffb703" stop-opacity="0"/></radialGradient>
+    <pattern id="dots" width="26" height="26" patternUnits="userSpaceOnUse"><circle cx="3" cy="3" r="2" fill="#ffffff" opacity=".06"/></pattern>
+  </defs>
+  <rect width="2560" height="1440" fill="url(#bg)"/>
+  <rect width="2560" height="1440" fill="url(#dots)"/>
+  <rect width="2560" height="1440" fill="url(#glow)"/>
+  <rect width="2560" height="1440" fill="url(#glow2)"/>
+  <g opacity=".12" stroke="#ffffff" stroke-width="3">
+    <path d="M0 1120 L2560 340"/><path d="M0 1300 L2560 520"/><path d="M0 940 L2560 160"/>
+  </g>
+
+  <!-- SAFE AREA for YouTube banner (visible on all devices): x 507-2053, y 423-1017 -->
+  <g transform="translate(620 470)">
+    <g transform="scale(.78)">
+      <path d="M256 96 396 158v116c0 84-58 128-140 158-82-30-140-74-140-158V158z" fill="#ffb703"/>
+      <path d="M256 132 366 182v92c0 66-45 100-110 126-65-26-110-60-110-126v-92z" fill="#0a0a0c"/>
+      <path d="M196 236h120l-16-58h-24l-8 28h-24l-8-28h-24z" fill="#ffb703"/>
+      <path d="M206 250h100v14H206zm0 30h100v14H206z" fill="#f5f5f7"/>
+      <path d="M256 262v66" stroke="#f5f5f7" stroke-width="12" stroke-linecap="round"/>
+      <circle cx="256" cy="336" r="16" fill="#ef233c"/>
+    </g>
+    <g font-family="Archivo, Helvetica, Arial, sans-serif" font-weight="900" letter-spacing="-3">
+      <text x="290" y="215" fill="#f5f5f7" font-size="150">JUSTICE SOCIETY</text>
+      <text x="290" y="360" fill="#ef233c" font-size="150">OF ACTIVISM</text>
+    </g>
+    <text x="296" y="440" fill="#cfcfd8" font-family="Helvetica, Arial, sans-serif" font-size="46" letter-spacing="14">EVIDENCE • AMPLITUDE • ACTION</text>
+  </g>
+
+  <g transform="translate(1810 640)" fill="none" stroke="#ffb703" stroke-width="8" opacity=".7">
+    <circle cx="160" cy="160" r="150"/><circle cx="160" cy="160" r="120"/>
+    <path d="M160 60v200M60 160h200" opacity=".3"/>
+  </g>
+
+  <rect x="0" y="0" width="2560" height="10" fill="#ef233c"/>
+  <rect x="0" y="1430" width="2560" height="10" fill="#ffb703"/>
+</svg>

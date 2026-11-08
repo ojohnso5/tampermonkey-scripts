@@ -1,0 +1,11 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 400 400" width="400" height="400" role="img" aria-label="Justice Society of Activism profile picture">
+  <defs><linearGradient id="a" x1="0" y1="0" x2="1" y2="1"><stop offset="0" stop-color="#ffb703"/><stop offset="1" stop-color="#ef233c"/></linearGradient></defs>
+  <rect width="400" height="400" fill="#0a0a0c"/>
+  <circle cx="200" cy="200" r="176" fill="none" stroke="url(#a)" stroke-width="14"/>
+  <path d="M200 70 316 120v92c0 66-46 100-116 126-70-26-116-60-116-126v-92z" fill="url(#a)"/>
+  <path d="M200 100 288 138v74c0 52-35 80-88 102-53-22-88-50-88-102v-74z" fill="#0a0a0c"/>
+  <path d="M152 180h96l-13-46h-19l-7 22h-19l-6-22h-19z" fill="#ffb703"/>
+  <path d="M160 192h80v12h-80zm0 24h80v12h-80z" fill="#f5f5f7"/>
+  <path d="M200 200v52" stroke="#f5f5f7" stroke-width="10" stroke-linecap="round"/>
+  <circle cx="200" cy="258" r="13" fill="#ef233c"/>
+</svg>
