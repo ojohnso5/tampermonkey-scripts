@@ -87,4 +87,58 @@ function limbPoints(R, count, phase) {
   return pts;
 }
 
-module.exports = { project, polyPath, graticule, limbPoints, NORTH_AMERICA, SOUTH_AMERICA, GREENLAND, CENTRAL_AMERICA, CARIBBEAN };
+
+/**
+ * Network energy lines that wrap around the globe: latitude bands and
+ * tilted great-circle arcs. Each returns an SVG path in globe coordinates.
+ */
+function networkArcs(R, cx, cy) {
+  const paths = [];
+
+  // latitude bands, projected as ellipses that foreshorten with latitude
+  for (let lat = -45; lat <= 45; lat += 30) {
+    const pts = [];
+    for (let lon = -180; lon <= 180; lon += 5) {
+      const [x, y] = project(lon, lat, R);
+      if (Math.hypot(x, y) <= R * 1.02) pts.push([cx + x, cy + y]);
+    }
+    if (pts.length > 3) {
+      paths.push('M' + pts.map(p => p[0].toFixed(1) + ' ' + p[1].toFixed(1)).join(' L'));
+    }
+  }
+
+  // tilted great circles, drawn as arcs that curve around the sphere
+  const tilts = [0.35, -0.55, 1.05, 2.15];
+  tilts.forEach(t => {
+    const pts = [];
+    for (let a = 0; a <= 360; a += 4) {
+      const rad = a * Math.PI / 180;
+      const rr = R * 1.035;
+      const x = Math.cos(rad) * rr;
+      const y = Math.sin(rad) * rr * Math.cos(t);
+      const ox = Math.sin(rad) * rr * 0.10;
+      pts.push([cx + x + ox, cy + y]);
+    }
+    paths.push('M' + pts.map(p => p[0].toFixed(1) + ' ' + p[1].toFixed(1)).join(' L'));
+  });
+
+  return paths;
+}
+
+/** Node positions scattered across the globe for the network lattice. */
+function networkNodes(R, cx, cy, count, seed) {
+  let s = seed || 7919;
+  const rnd = () => { s = (s * 1103515245 + 12345) % 2147483648; return s / 2147483648; };
+  const out = [];
+  for (let i = 0; i < count; i++) {
+    const a = rnd() * Math.PI * 2;
+    const r = R * Math.sqrt(rnd()) * 0.96;
+    out.push([cx + Math.cos(a) * r, cy + Math.sin(a) * r, 1.4 + rnd() * 3.2]);
+  }
+  return out;
+}
+
+module.exports = {
+  project, polyPath, graticule, limbPoints, networkArcs, networkNodes,
+  NORTH_AMERICA, SOUTH_AMERICA, GREENLAND, CENTRAL_AMERICA, CARIBBEAN
+};

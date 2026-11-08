@@ -37,13 +37,13 @@ function add(name, svg, png) {
   if (png) assets.push({ name, svg, png });
 }
 
-/* ---- 1. Primary crest ------------------------------------------- */
-add('logo-crest.svg', crest({ size: 1024 }),
-  { file: 'logo-crest-1024.png', width: 1024, height: 1024 });
+/* ---- 1. Primary crest: icon-only, transparent background -------- */
+add('logo-crest.svg', crest({ size: 1024, transparent: true }),
+  { file: 'logo-crest-1024.png', width: 1024, height: 1024, transparent: true });
 
 /* ---- 2. Crest variants ------------------------------------------- */
-add('logo-crest-transparent.svg', crest({ size: 1024, transparent: true }),
-  { file: 'logo-crest-transparent-1024.png', width: 1024, height: 1024, transparent: true });
+add('logo-crest-solid.svg', crest({ size: 1024, idPrefix: 'S' }),
+  { file: 'logo-crest-solid-1024.png', width: 1024, height: 1024, background: '#0B0B0F' });
 
 add('logo-crest-dark.svg', crest({ size: 1024, idPrefix: 'D' }),
   { file: 'logo-crest-dark-1024.png', width: 1024, height: 1024, background: '#0B0B0F' });
@@ -87,6 +87,13 @@ THUMBS.forEach(t => {
   add(t.file + '.svg', thumbnail({ headline: t.headline, kicker: t.kicker, variant: t.variant }),
     { file: t.file + '-1280x720.png', width: 1280, height: 720 });
 });
+
+/* ---- 7b. Public copies used by the channel page ------------------ */
+fs.mkdirSync(path.join(__dirname, 'public'), { recursive: true });
+fs.copyFileSync(path.join(OUT, 'logo-crest.svg'), path.join(__dirname, 'public', 'crest.svg'));
+fs.copyFileSync(path.join(OUT, 'watermark.svg'), path.join(__dirname, 'public', 'watermark.svg'));
+console.log('  svg  brand/public/crest.svg');
+console.log('  svg  brand/public/watermark.svg');
 
 /* ---- 8. Avatar sizes (YouTube wants 800x800) --------------------- */
 [800, 400, 256, 128, 64].forEach(sz => {

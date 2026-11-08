@@ -1,6 +1,6 @@
 {
   "brand": "Justice Society of Activism",
-  "generated": "2026-11-08T20:52:41.987Z",
+  "generated": "2026-11-08T20:58:33.856Z",
   "palette": {
     "midnight": "#0B0B0F",
     "red": "#E11937",
@@ -14,8 +14,8 @@
       "size": "1024x1024"
     },
     {
-      "svg": "logo-crest-transparent.svg",
-      "png": "logo-crest-transparent-1024.png",
+      "svg": "logo-crest-solid.svg",
+      "png": "logo-crest-solid-1024.png",
       "size": "1024x1024"
     },
     {

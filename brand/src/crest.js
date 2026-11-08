@@ -100,13 +100,18 @@ function crest(o) {
     layers.push(`<circle cx="${cx}" cy="${cy}" r="${S*0.497}" fill="url(#${id}Field)"/>`);
   }
 
-  // Red outer energy halo
-  layers.push(`<circle cx="${cx}" cy="${cy}" r="${S*0.50}" fill="url(#${id}Halo)"/>`);
+  // Red outer energy halo. On a transparent background it is masked to the
+  // ring area only, so the deliverable has clean, empty transparency.
+  if (o.transparent) {
+    layers.push(`<circle cx="${cx}" cy="${cy}" r="${S*0.50}" fill="url(#${id}Halo)" style="mix-blend-mode:screen"/>`);
+  } else {
+    layers.push(`<circle cx="${cx}" cy="${cy}" r="${S*0.50}" fill="url(#${id}Halo)"/>`);
+  }
 
   // ================= GLOBE =================
   if (o.withGlobe) {
-    const R = S * 0.298;
-    const gx = cx - S * 0.012, gy = cy - S * 0.006;
+    const R = S * 0.230;
+    const gx = cx, gy = cy + S * 0.185;
     const g = [];
 
     // Blue core
@@ -125,15 +130,25 @@ function crest(o) {
     g.push(`<g fill="url(#${id}GlobeLand)" opacity=".92">` +
       lands.map(poly => `<path d="${geo.polyPath(poly, R, gx, gy)}"/>`).join('') + `</g>`);
 
-    // Blue energy radiating out of the globe
+    // Global network energy lines wrapping around the sphere
+    const arcs = geo.networkArcs(R, gx, gy);
+    g.push(`<g stroke="${C.blue}" stroke-width="${S*0.0032}" stroke-linecap="round" opacity=".8" filter="url(#${id}BlueGlow)" fill="none">` +
+      arcs.map(d => `<path d="${d}"/>`).join('') + `</g>`);
+
+    // network nodes on the lattice
+    const nodes = geo.networkNodes(R, gx, gy, 26, 4409);
+    g.push(`<g fill="${C.blueLight}">` +
+      nodes.map(n => `<circle cx="${n[0].toFixed(1)}" cy="${n[1].toFixed(1)}" r="${n[2].toFixed(1)}" opacity=".85"/>`).join('') + `</g>`);
+
+    // Blue energy radiating up out of the globe toward the hero
     const rays = [];
-    for (let i = 0; i < 28; i++) {
-      const a = (i / 28) * Math.PI * 2 + 0.11;
-      const r1 = R * 1.02, r2 = R * (1.16 + (i % 3) * 0.09);
+    for (let i = 0; i < 18; i++) {
+      const a = -Math.PI * 0.5 + (i - 8.5) * 0.135;
+      const r1 = R * 1.02, r2 = R * (1.18 + (i % 3) * 0.1);
       rays.push(`M ${(gx + Math.cos(a) * r1).toFixed(1)} ${(gy + Math.sin(a) * r1).toFixed(1)} ` +
         `L ${(gx + Math.cos(a) * r2).toFixed(1)} ${(gy + Math.sin(a) * r2).toFixed(1)}`);
     }
-    g.push(`<g stroke="${C.blue}" stroke-width="${S*0.0035}" stroke-linecap="round" opacity=".7" filter="url(#${id}BlueGlow)">` +
+    g.push(`<g stroke="${C.blue}" stroke-width="${S*0.0032}" stroke-linecap="round" opacity=".55" filter="url(#${id}BlueGlow)">` +
       rays.map(d => `<path d="${d}"/>`).join('') + `</g>`);
 
     // Gold framing — two arcs
@@ -149,16 +164,16 @@ function crest(o) {
       fill="${C.blueLight}" opacity=".16" transform="rotate(-28 ${gx - R*0.34} ${gy - R*0.42})"/>`);
 
     // backlight bloom so the hero reads as a silhouette against it
-    g.push(`<circle cx="${gx}" cy="${gy}" r="${R*1.5}" fill="${C.blue}" opacity=".13" filter="url(#${id}Soft)"/>`);
+    g.push(`<circle cx="${gx}" cy="${gy}" r="${R*1.28}" fill="${C.blue}" opacity=".10" filter="url(#${id}Soft)"/>`);
     layers.push(`<g id="${id}Globe">${g.join('\n')}</g>`);
   }
 
   // ================= HERO =================
   // The hero is placed first so the emblem and energy stream can be derived
   // from its actual transform rather than hard-coded coordinates.
-  const hs = S / 1000 * 0.90;
-  const hx = cx - S * 0.468;
-  const hy = cy - S * 0.422;
+  const hs = S / 1000 * 0.95;
+  const hx = cx - S * 0.455;
+  const hy = cy - S * 0.395;
   const toCrest = p => ({ x: hx + p.x * hs, y: hy + p.y * hs });
 
   if (o.withHero) {
@@ -174,7 +189,7 @@ function crest(o) {
   // ================= ENERGY STREAM =================
   // Blue energy rising from the globe core into the chest emblem.
   if (o.withHero && o.withGlobe) {
-    const gx = cx - S * 0.012, gy = cy - S * 0.006;
+    const gx = cx, gy = cy + S * 0.185;
     const sx = gx, sy = gy;
     const ex = chest.x, ey = chest.y;
     layers.push(`<g id="${id}Stream" filter="url(#${id}BlueGlow)" opacity=".95">

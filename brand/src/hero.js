@@ -1,201 +1,130 @@
 /**
- * The hero figure — a stylised superhero in a forward flight pose.
+ * The hero figure — a futuristic superhero in a forward flight pose,
+ * wearing a modern tactical suit.
  *
- * Read: the figure is a near-black silhouette with a gold key rim-light on
- * the leading edge and a blue fill-light from the globe below, so it stays
- * legible against a dark field at avatar size. The cape defines the
- * trailing silhouette and carries the red.
+ * Construction: layered armour plates rather than a smooth bodysuit. Each
+ * plate is drawn four times — a dark gradient body, a vertical shade, a
+ * bevelled edge catching the key light from the upper left, and a gold trim
+ * line — so the figure reads as machined metal rather than flat vector.
  *
- * Proportions are heroic but not comic-book: ~7.5 heads, streamlined,
- * cinematic. No exaggerated musculature.
+ * Lighting model:
+ *   key   warm gold, upper left
+ *   fill  electric blue, lower right (bounce off the globe)
+ *   rim   activism red, along the trailing edge
+ *
+ * The JSA monogram is engraved into the chest plate, not applied on top.
  *
  * Coordinate space: 0..1000 square.
- *   head ~ (600,190)   chest ~ (545,300)   hips ~ (455,430)
- *   leading hand ~ (865,175)   trailing hand ~ (320,395)   feet ~ (215,700)
+ *   helmet x 555-750, y 68-268     chest plate x 434-706, y 200-402
+ *   lead fist ~ (930, 465)         hips x 452-668, y 388-528
+ *   far boot ~ (300, 900)          near boot ~ (740, 880)
  */
 const { C, rgba } = require('./palette');
 
+/**
+ * A single armour plate with bevelled edges.
+ * @param {string} d    path data
+ * @param {object} o    { fill, trim, trimWidth, bevel, shade }
+ */
+function plate(d, o) {
+  o = Object.assign({ fill: 'url(#SUIT)', trim: null, trimWidth: 3, bevel: true, shade: 0.28 }, o);
+  const parts = [];
+  parts.push(`<path d="${d}" fill="${o.fill}"/>`);
+  if (o.shade) parts.push(`<path d="${d}" fill="url(#SHADE)" opacity="${o.shade}"/>`);
+  if (o.bevel) parts.push(`<path d="${d}" fill="none" stroke="url(#BEVEL)" stroke-width="2.6" opacity=".55"/>`);
+  if (o.trim) parts.push(`<path d="${d}" fill="none" stroke="${o.trim}" stroke-width="${o.trimWidth}" opacity=".85"/>`);
+  return parts.join('\n');
+}
+
+// Monogram letterforms, drawn as one fused mark in a 0..200 box.
+const MONO_J = `M 74 44 L 74 112 C 74 132, 62 144, 44 144 C 30 144, 21 137, 18 128 L 30 118 C 33 124, 37 127, 44 127 C 52 127, 56 122, 56 113 L 56 44 Z`;
+const MONO_S = `M 118 40 C 106 33, 92 30, 80 33 C 66 37, 58 47, 60 60 C 62 72, 73 78, 88 82 C 101 85, 108 89, 110 96 C 112 103, 107 109, 98 111 C 88 113, 79 110, 72 105 L 62 118 C 73 126, 88 130, 102 126 C 116 122, 126 111, 124 97 C 122 84, 110 78, 95 74 C 82 71, 75 68, 75 62 C 75 56, 81 51, 90 51 C 97 51, 103 54, 109 58 Z`;
+const MONO_A = `M 126 152 L 154 44 L 178 44 L 200 152 L 180 152 L 176 134 L 142 134 L 138 152 Z M 148 116 L 170 116 L 159 66 Z`;
+
 function hero(o) {
   o = Object.assign({
-    scale: 1, tx: 0, ty: 0,
-    suit: '#1B1B26', trim: C.red, gold: C.gold, blue: C.blue,
-    flat: false, idPrefix: 'h'
+    scale: 1, tx: 0, ty: 0, idPrefix: 'h',
+    suit: '#1A1A24', trim: C.red, gold: C.gold, blue: C.blue, flat: false
   }, o);
   const id = o.idPrefix;
   const g = [];
+  const T = o.trim, GD = o.gold, BL = o.blue;
 
-  // ------------------------------------------------------------------
-  // CAPE — a ribbon streaming back and down, red, with gold edge light.
-  // ------------------------------------------------------------------
-  g.push(`<path d="M 556 258
-      C 470 268, 380 320, 300 392
-      C 232 452, 176 530, 132 616
-      C 104 670, 96 724, 116 764
-      C 136 802, 186 806, 208 776
-      C 232 744, 214 690, 238 640
-      C 274 566, 336 500, 410 448
-      C 456 416, 508 384, 556 350 Z"
-      fill="${o.flat ? o.trim : 'url(#' + id + 'Cape)'}"
-      ${o.flat ? '' : 'stroke="' + rgba(o.gold, .5) + '" stroke-width="3" stroke-linejoin="round"'}/>`);
+  /* ---------- CAPE ---------- */
+  g.push(`<path d="M 470 250 C 392 272, 320 322, 258 386 C 206 440, 160 506, 122 580 C 92 640, 84 700, 104 744 C 124 786, 176 792, 200 760 C 226 726, 208 668, 236 612 C 276 534, 344 470, 424 424 C 468 396, 500 366, 528 336 Z" fill="url(#CAPE)"/>`);
+  g.push(`<path d="M 470 258 C 396 280, 326 330, 266 392 C 214 446, 170 510, 134 582 C 110 632, 100 684, 112 720 C 116 676, 150 600, 206 530 C 270 452, 386 386, 500 320 Z" fill="rgba(0,0,0,.40)"/>`);
+  g.push(`<path d="M 528 336 C 500 366, 468 396, 424 424" fill="none" stroke="${GD}" stroke-width="2.6" opacity=".7"/>`);
+  g.push(`<path d="M 122 580 C 92 640, 84 700, 104 744" fill="none" stroke="${T}" stroke-width="3.4" opacity=".85"/>`);
 
-  // cape inner shadow
-  if (!o.flat) {
-    g.push(`<path d="M 556 268 C 470 280, 384 332, 306 402 C 240 462, 186 540, 144 622
-        C 122 668, 118 706, 130 736 C 134 690, 168 610, 224 540 C 288 462, 400 396, 520 330 Z"
-        fill="rgba(0,0,0,.34)"/>`);
+  /* ---------- FAR LEG ---------- */
+  g.push(plate(`M 400 520 C 372 566, 348 618, 330 676 L 386 694 C 404 638, 428 584, 458 542 Z`, { fill: 'url(#SUIT_DARK)' }));
+  g.push(plate(`M 330 672 L 386 690 C 380 740, 370 800, 356 856 L 298 848 C 306 790, 316 728, 330 672 Z`, { fill: 'url(#SUIT_DARK)' }));
+  g.push(plate(`M 296 842 L 358 850 C 372 872, 368 906, 342 922 C 314 938, 278 930, 268 904 C 262 886, 274 852, 296 842 Z`, { fill: 'url(#SUIT_DARK)', trim: rgba(GD, .5), trimWidth: 2.4 }));
+  g.push(`<path d="M 386 694 C 380 740, 370 800, 356 856" fill="none" stroke="${BL}" stroke-width="3.2" opacity=".6"/>`);
+
+  /* ---------- FAR ARM ---------- */
+  g.push(plate(`M 430 300 C 398 314, 368 344, 348 384 L 398 410 C 418 372, 442 342, 468 324 Z`, { fill: 'url(#SUIT_DARK)' }));
+  g.push(plate(`M 348 380 L 400 406 C 384 438, 368 470, 352 498 L 302 470 C 314 436, 330 402, 348 380 Z`, { fill: 'url(#SUIT_DARK)' }));
+
+  /* ---------- TORSO ---------- */
+  g.push(plate(`M 452 388 L 668 388 C 680 440, 664 496, 626 528 L 500 528 C 462 500, 442 444, 452 388 Z`, { fill: 'url(#SUIT)' }));
+  for (let i = 0; i < 3; i++) {
+    const y = 420 + i * 34;
+    g.push(`<path d="M ${466 + i*4} ${y} L ${654 - i*4} ${y}" fill="none" stroke="rgba(0,0,0,.55)" stroke-width="4"/>`);
+    g.push(`<path d="M ${468 + i*4} ${y+4} L ${652 - i*4} ${y+4}" fill="none" stroke="${rgba(GD,.35)}" stroke-width="1.6"/>`);
   }
 
-  // ------------------------------------------------------------------
-  // FAR LEG — trailing, behind the near leg, darker.
-  // ------------------------------------------------------------------
-  g.push(`<path d="M 430 424
-      C 380 486, 330 556, 286 632
-      C 254 688, 228 742, 226 782
-      C 225 806, 244 818, 266 810
-      C 296 798, 330 752, 366 700
-      C 410 636, 452 570, 486 508 Z"
-      fill="${o.flat ? o.suit : 'url(#' + id + 'SuitB)'}"
-      ${o.flat ? '' : 'stroke="' + rgba(o.blue, .5) + '" stroke-width="2.5"'}/>`);
+  // main chest carapace
+  g.push(plate(`M 452 236 C 502 206, 590 200, 646 220 C 690 236, 706 276, 700 322 C 694 366, 672 394, 640 402 L 478 402 C 448 394, 432 366, 434 322 C 436 280, 430 250, 452 236 Z`, { fill: 'url(#SUIT)', trim: rgba(GD, .55), trimWidth: 2.6 }));
+  g.push(`<path d="M 470 250 C 512 224, 584 218, 634 236 C 660 248, 674 272, 676 300 C 626 276, 542 272, 466 296 C 464 276, 466 260, 470 250 Z" fill="url(#BEVEL)" opacity=".38"/>`);
+  g.push(`<path d="M 452 244 C 478 232, 506 226, 530 228 L 524 268 C 500 266, 476 270, 456 280 Z" fill="${T}" opacity=".9"/>`);
+  g.push(`<path d="M 452 244 C 478 232, 506 226, 530 228" fill="none" stroke="${rgba(GD,.7)}" stroke-width="2"/>`);
+  g.push(`<path d="M 560 214 L 556 398" fill="none" stroke="${GD}" stroke-width="3" opacity=".75"/>`);
 
-  // far boot
-  if (!o.flat) {
-    g.push(`<path d="M 228 768 C 252 762, 278 774, 288 796 C 294 810, 284 820, 266 816
-        C 242 810, 224 794, 222 780 Z" fill="${o.trim}" opacity=".9"/>`);
-  }
+  /* ---------- CHEST EMBLEM: engraved monogram ---------- */
+  const es = 0.74, ex = 566 - 100 * es, ey = 300 - 100 * es;
+  g.push(`<g transform="translate(${ex} ${ey}) scale(${es})" id="${id}Monogram">`);
+  g.push(`<rect x="30" y="12" width="140" height="176" rx="12" fill="rgba(0,0,0,.55)"/>`);
+  g.push(`<rect x="30" y="12" width="140" height="176" rx="12" fill="none" stroke="${rgba(GD,.5)}" stroke-width="2"/>`);
+  g.push(`<g fill="url(#MONO_GOLD)" stroke="rgba(0,0,0,.9)" stroke-width="4"><path d="${MONO_J}"/><path d="${MONO_S}"/><path d="${MONO_A}" fill-rule="evenodd"/></g>`);
+  g.push(`<g fill="none" stroke="#F6E7B4" stroke-width="2" opacity=".8"><path d="M 74 44 L 74 112 C 74 132, 62 144, 44 144 C 30 144, 21 137, 18 128"/><path d="M 118 40 C 106 33, 92 30, 80 33 C 66 37, 58 47, 60 60"/><path d="M 126 152 L 154 44 L 178 44 L 200 152"/></g>`);
+  g.push(`<g filter="url(#ENERGY_GLOW)"><path d="M 66 26 L 50 80 L 72 80 L 56 140 L 98 74 L 76 74 L 92 26 Z" fill="${BL}" opacity=".95"/><circle cx="66" cy="80" r="6" fill="#BDEBFF"/></g>`);
+  g.push(`</g>`);
 
-  // ------------------------------------------------------------------
-  // FAR ARM — trailing back, bent, mostly in shadow.
-  // ------------------------------------------------------------------
-  g.push(`<path d="M 508 268
-      C 458 288, 404 322, 360 366
-      C 330 396, 326 424, 350 436
-      C 374 448, 410 424, 448 396
-      C 486 368, 522 342, 548 322 Z"
-      fill="${o.flat ? o.suit : 'url(#' + id + 'SuitB)'}"
-      ${o.flat ? '' : 'stroke="' + rgba(o.blue, .42) + '" stroke-width="2.5"'}/>`);
+  /* ---------- NEAR LEG ---------- */
+  g.push(plate(`M 520 508 C 566 524, 614 556, 652 600 L 606 652 C 572 612, 532 580, 486 556 Z`, { fill: 'url(#SUIT)' }));
+  g.push(plate(`M 640 594 L 700 626 C 712 650, 706 676, 686 688 L 626 656 C 630 632, 634 612, 640 594 Z`, { fill: 'url(#SUIT)', trim: rgba(GD, .5), trimWidth: 2.2 }));
+  g.push(plate(`M 646 660 L 706 682 C 726 736, 742 790, 748 840 L 680 848 C 668 792, 656 726, 646 660 Z`, { fill: 'url(#SUIT)' }));
+  g.push(plate(`M 676 838 L 750 830 C 776 848, 790 886, 776 908 C 758 936, 712 934, 690 912 C 672 894, 668 856, 676 838 Z`, { fill: 'url(#SUIT)', trim: rgba(GD, .6), trimWidth: 2.6 }));
+  g.push(`<path d="M 700 872 L 776 862 L 780 890 L 704 902 Z" fill="${T}" opacity=".85"/>`);
+  g.push(`<path d="M 652 600 L 700 626 C 712 650, 706 676, 686 688" fill="none" stroke="${BL}" stroke-width="3" opacity=".55"/>`);
 
-  // ------------------------------------------------------------------
-  // TORSO — the primary mass. Shoulders wide, tapering to the waist.
-  // ------------------------------------------------------------------
-  g.push(`<path d="M 500 232
-      C 548 196, 618 190, 660 214
-      C 700 236, 716 278, 710 330
-      C 704 386, 672 438, 622 476
-      C 580 508, 512 508, 470 478
-      C 434 452, 418 400, 424 350
-      C 428 302, 456 258, 500 232 Z"
-      fill="${o.flat ? o.suit : 'url(#' + id + 'Suit)'}"
-      ${o.flat ? '' : 'stroke="' + rgba(o.gold, .6) + '" stroke-width="3.2"'}/>`);
+  /* ---------- HEAD ---------- */
+  g.push(plate(`M 556 150 C 566 100, 610 68, 660 68 C 712 68, 748 100, 750 152 C 752 196, 734 234, 700 252 C 668 268, 618 268, 586 252 C 554 236, 542 194, 556 150 Z`, { fill: 'url(#HELM)', trim: rgba(GD, .65), trimWidth: 2.6 }));
+  g.push(`<path d="M 600 82 C 640 62, 700 66, 728 96 L 712 118 C 690 96, 646 90, 614 102 Z" fill="${GD}" opacity=".8"/>`);
+  g.push(`<path d="M 566 158 C 606 138, 690 138, 736 160 L 736 194 C 692 210, 610 208, 570 192 Z" fill="url(#VISOR)"/>`);
+  g.push(`<path d="M 566 158 C 606 138, 690 138, 736 160" fill="none" stroke="${rgba(GD,.75)}" stroke-width="2.4"/>`);
+  g.push(`<path d="M 744 152 L 752 160 L 748 206 L 738 196 Z" fill="${T}" opacity=".9"/>`);
+  g.push(plate(`M 574 200 C 614 216, 690 218, 734 202 L 728 236 C 700 258, 640 262, 600 248 Z`, { fill: 'url(#HELM)', shade: .35 }));
+  g.push(plate(`M 560 246 C 610 268, 676 268, 716 248 L 724 282 C 678 302, 606 302, 556 280 Z`, { fill: 'url(#SUIT)', trim: rgba(GD, .45), trimWidth: 2.2 }));
 
-  if (!o.flat) {
-    // pectoral highlight
-    g.push(`<path d="M 505 246 C 552 214, 618 212, 658 234 C 682 248, 694 276, 692 302
-        C 646 274, 566 268, 490 292 C 490 272, 496 256, 505 246 Z"
-      fill="rgba(255,255,255,.06)"/>`);
-    // abdominal shadow
-    g.push(`<path d="M 432 340 C 486 362, 578 366, 702 344 C 696 404, 666 448, 620 474
-        C 580 504, 514 504, 472 476 C 438 452, 424 396, 432 340 Z"
-      fill="rgba(0,0,0,.30)"/>`);
-    // red chest plating across the shoulders
-    g.push(`<path d="M 500 234 C 548 204, 614 198, 656 220 C 684 236, 700 262, 704 288
-        C 660 258, 566 250, 484 280 C 488 258, 492 242, 500 234 Z"
-      fill="${o.trim}" opacity=".85"/>`);
-    // slim red belt at the waist
-    g.push(`<path d="M 452 404 C 500 424, 588 428, 700 406 C 696 424, 692 438, 688 450
-        C 580 470, 500 466, 456 448 C 452 434, 451 418, 452 404 Z"
-      fill="${o.trim}" opacity=".8"/>`);
-  }
+  /* ---------- NEAR ARM ---------- */
+  g.push(plate(`M 646 224 C 686 216, 726 234, 742 274 L 700 302 C 682 268, 660 244, 636 234 Z`, { fill: 'url(#SUIT)', trim: rgba(GD, .6), trimWidth: 2.6 }));
+  g.push(plate(`M 660 226 C 694 222, 724 238, 738 270 L 712 280 C 700 254, 682 238, 656 234 Z`, { fill: 'url(#SUIT)', shade: .15 }));
+  g.push(plate(`M 700 296 C 736 306, 772 326, 800 352 L 762 392 C 736 368, 706 346, 672 330 Z`, { fill: 'url(#SUIT)' }));
+  g.push(plate(`M 788 344 L 826 380 C 838 400, 832 424, 812 434 L 776 398 C 776 376, 780 358, 788 344 Z`, { fill: 'url(#SUIT)', trim: rgba(GD, .45), trimWidth: 2 }));
+  g.push(plate(`M 812 386 C 852 400, 890 420, 918 442 L 886 484 C 860 462, 830 442, 796 428 Z`, { fill: 'url(#SUIT)', trim: rgba(GD, .7), trimWidth: 2.6 }));
+  g.push(`<path d="M 830 396 L 806 428 M 862 414 L 838 450 M 892 432 L 868 468" fill="none" stroke="${rgba(GD,.55)}" stroke-width="2.6"/>`);
+  g.push(plate(`M 906 430 C 936 428, 962 444, 968 468 C 974 490, 960 508, 936 506 C 912 504, 894 486, 890 464 C 888 448, 894 434, 906 430 Z`, { fill: 'url(#SUIT)', trim: rgba(GD, .5), trimWidth: 2.2 }));
+  g.push(`<path d="M 916 438 L 962 446 L 964 462 L 920 454 Z" fill="${T}" opacity=".85"/>`);
+  g.push(`<path d="M 700 296 C 736 306, 772 326, 800 352" fill="none" stroke="${GD}" stroke-width="3.4" opacity=".85"/>`);
+  g.push(`<path d="M 812 386 C 852 400, 890 420, 918 442" fill="none" stroke="${GD}" stroke-width="3" opacity=".8"/>`);
+  g.push(`<path d="M 700 314 C 734 326, 766 344, 792 366" fill="none" stroke="${BL}" stroke-width="2.6" opacity=".65"/>`);
 
-  // ------------------------------------------------------------------
-  // NEAR LEG — thrusting forward and down.
-  // ------------------------------------------------------------------
-  g.push(`<path d="M 500 452
-      C 546 480, 596 520, 640 566
-      C 676 604, 700 646, 700 684
-      C 700 716, 678 734, 650 726
-      C 618 716, 594 684, 560 648
-      C 512 598, 462 552, 428 510 Z"
-      fill="${o.flat ? o.suit : 'url(#' + id + 'SuitA)'}"
-      ${o.flat ? '' : 'stroke="' + rgba(o.gold, .5) + '" stroke-width="3"'}/>`);
-
-  if (!o.flat) {
-    // boot
-    g.push(`<path d="M 646 686 C 676 680, 706 692, 718 714 C 726 730, 714 744, 692 740
-        C 664 734, 640 716, 634 700 Z" fill="${o.trim}"/>`);
-  }
-
-  // ------------------------------------------------------------------
-  // HEAD — helmet, angled forward, jaw set.
-  // ------------------------------------------------------------------
-  g.push(`<path d="M 578 118
-      C 540 128, 518 166, 522 208
-      C 526 250, 560 280, 606 282
-      C 652 284, 688 254, 692 210
-      C 696 166, 666 128, 620 118
-      C 606 114, 590 115, 578 118 Z"
-      fill="${o.flat ? o.suit : 'url(#' + id + 'Helm)'}"
-      ${o.flat ? '' : 'stroke="' + rgba(o.gold, .65) + '" stroke-width="3.2"'}/>`);
-
-  if (!o.flat) {
-    // visor — angled, forward gaze
-    g.push(`<path d="M 542 176 C 578 156, 644 156, 684 180 C 692 188, 692 202, 684 212
-        C 638 228, 580 226, 544 208 C 534 200, 534 184, 542 176 Z"
-      fill="url(#${id}Visor)"/>`);
-    // lower mask
-    g.push(`<path d="M 544 212 C 582 230, 640 232, 686 214 C 680 246, 652 266, 612 266
-        C 574 266, 550 246, 544 212 Z" fill="${o.suit}" opacity=".9"/>`);
-    // helmet crest
-    g.push(`<path d="M 608 112 C 646 114, 678 138, 688 174 L 666 174
-        C 656 148, 636 130, 606 130 Z" fill="${o.gold}" opacity=".6"/>`);
-  }
-
-  // ------------------------------------------------------------------
-  // NEAR ARM — extended forward, the leading gesture.
-  // ------------------------------------------------------------------
-  g.push(`<path d="M 648 240
-      C 704 250, 768 268, 826 292
-      C 872 311, 906 340, 918 372
-      C 928 398, 912 420, 886 414
-      C 858 408, 830 386, 798 366
-      C 740 330, 686 302, 638 286 Z"
-      fill="${o.flat ? o.suit : 'url(#' + id + 'SuitA)'}"
-      ${o.flat ? '' : 'stroke="' + rgba(o.gold, .55) + '" stroke-width="3"'}/>`);
-
-  // gold gauntlet
-  if (!o.flat) {
-    g.push(`<path d="M 812 296 C 856 314, 890 340, 912 368 L 886 394
-        C 866 368, 834 342, 796 322 Z" fill="${o.gold}" opacity=".85"/>`);
-  }
-
-  // fist
-  g.push(`<path d="M 886 366 C 914 362, 940 378, 948 400 C 954 420, 940 438, 918 436
-        C 896 434, 876 418, 872 398 C 870 384, 876 370, 886 366 Z"
-      fill="${o.trim}"/>`);
-
-  // ------------------------------------------------------------------
-  // RIM LIGHTS — the reason the silhouette reads at small sizes.
-  // ------------------------------------------------------------------
-  if (!o.flat) {
-    // gold key light along the top/leading contour
-    g.push(`<path d="M 502 230 C 550 194, 618 190, 660 214" fill="none"
-      stroke="${o.gold}" stroke-width="7" stroke-linecap="round" opacity="1"/>`);
-    g.push(`<path d="M 664 218 C 700 240, 716 282, 710 330" fill="none"
-      stroke="${o.gold}" stroke-width="6" stroke-linecap="round" opacity=".92"/>`);
-    g.push(`<path d="M 522 208 C 518 166, 540 128, 578 118" fill="none"
-      stroke="${o.gold}" stroke-width="6.5" stroke-linecap="round" opacity=".98"/>`);
-    g.push(`<path d="M 606 114 C 646 116, 678 140, 690 176" fill="none"
-      stroke="${o.gold}" stroke-width="5" stroke-linecap="round" opacity=".9"/>`);
-    g.push(`<path d="M 660 244 C 716 256, 780 274, 838 298" fill="none"
-      stroke="${o.gold}" stroke-width="7" stroke-linecap="round" opacity=".95"/>`);
-    g.push(`<path d="M 500 232 C 548 196, 618 190, 660 214" fill="none"
-      stroke="${C.goldLight}" stroke-width="2.4" stroke-linecap="round" opacity=".9"/>`);
-    g.push(`<path d="M 424 350 C 418 400, 434 452, 470 478" fill="none"
-      stroke="${o.blue}" stroke-width="6" stroke-linecap="round" opacity=".9"/>`);
-    g.push(`<path d="M 428 508 C 462 552, 512 598, 560 648" fill="none"
-      stroke="${o.blue}" stroke-width="5" stroke-linecap="round" opacity=".75"/>`);
-    g.push(`<path d="M 226 782 C 228 742, 254 688, 286 632" fill="none"
-      stroke="${o.blue}" stroke-width="4.5" stroke-linecap="round" opacity=".65"/>`);
-  }
+  /* ---------- RIM LIGHTS ---------- */
+  g.push(`<path d="M 556 150 C 566 100, 610 68, 660 68 C 712 68, 748 100, 750 152" fill="none" stroke="${GD}" stroke-width="4" opacity=".95"/>`);
+  g.push(`<path d="M 452 236 C 502 206, 590 200, 646 220" fill="none" stroke="${GD}" stroke-width="4" opacity=".85"/>`);
+  g.push(`<path d="M 640 594 L 700 626 C 712 650, 706 676, 686 688" fill="none" stroke="${GD}" stroke-width="3.4" opacity=".7"/>`);
 
   return `<g transform="translate(${o.tx} ${o.ty}) scale(${o.scale})" id="${id}Hero">${g.join('\n')}</g>`;
 }
@@ -203,47 +132,53 @@ function hero(o) {
 function heroDefs(id) {
   const { C } = require('./palette');
   return `
-  <linearGradient id="${id}Suit" x1=".15" y1="0" x2=".85" y2="1">
-    <stop offset="0" stop-color="#3A3A4C"/><stop offset=".38" stop-color="#24242F"/>
-    <stop offset="1" stop-color="#0E0E15"/>
+  <linearGradient id="SUIT" x1=".15" y1="0" x2=".9" y2="1">
+    <stop offset="0" stop-color="#3C3C4E"/><stop offset=".3" stop-color="#26262F"/>
+    <stop offset=".62" stop-color="#17171F"/><stop offset="1" stop-color="#0C0C12"/>
   </linearGradient>
-  <linearGradient id="${id}SuitA" x1=".2" y1="0" x2=".9" y2="1">
-    <stop offset="0" stop-color="#434355"/><stop offset=".5" stop-color="#24242F"/>
+  <linearGradient id="SUIT_DARK" x1="0" y1="0" x2="1" y2="1">
+    <stop offset="0" stop-color="#22222C"/><stop offset="1" stop-color="#0A0A10"/>
+  </linearGradient>
+  <linearGradient id="HELM" x1=".15" y1="0" x2=".9" y2="1">
+    <stop offset="0" stop-color="#4A4A60"/><stop offset=".45" stop-color="#2A2A36"/>
     <stop offset="1" stop-color="#101017"/>
   </linearGradient>
-  <linearGradient id="${id}SuitB" x1="0" y1="0" x2="1" y2="1">
-    <stop offset="0" stop-color="#24242E"/><stop offset="1" stop-color="#0C0C12"/>
+  <linearGradient id="VISOR" x1="0" y1="0" x2="1" y2="1">
+    <stop offset="0" stop-color="#CFEEFF"/><stop offset=".35" stop-color="${C.blue}"/>
+    <stop offset=".75" stop-color="#0B4E72"/><stop offset="1" stop-color="#06283C"/>
   </linearGradient>
-  <linearGradient id="${id}Cape" x1=".15" y1="0" x2=".85" y2="1">
-    <stop offset="0" stop-color="#34090F"/><stop offset=".35" stop-color="${C.red}"/>
-    <stop offset=".72" stop-color="${C.redDeep}"/><stop offset="1" stop-color="#4E0613"/>
+  <linearGradient id="BEVEL" x1="0" y1="0" x2=".75" y2="1">
+    <stop offset="0" stop-color="#FFFFFF" stop-opacity=".75"/>
+    <stop offset=".45" stop-color="#FFFFFF" stop-opacity=".10"/>
+    <stop offset="1" stop-color="#000000" stop-opacity=".35"/>
   </linearGradient>
-  <linearGradient id="${id}Helm" x1=".2" y1="0" x2=".9" y2="1">
-    <stop offset="0" stop-color="#4A4A5E"/><stop offset=".5" stop-color="#282833"/>
-    <stop offset="1" stop-color="#111118"/>
+  <linearGradient id="SHADE" x1="0" y1="0" x2=".6" y2="1">
+    <stop offset="0" stop-color="#000" stop-opacity="0"/>
+    <stop offset=".55" stop-color="#000" stop-opacity=".15"/>
+    <stop offset="1" stop-color="#000" stop-opacity=".75"/>
   </linearGradient>
-  <linearGradient id="${id}Visor" x1="0" y1="0" x2="1" y2="1">
-    <stop offset="0" stop-color="${C.blueLight}" stop-opacity=".95"/>
-    <stop offset=".45" stop-color="${C.blue}" stop-opacity=".92"/>
-    <stop offset="1" stop-color="#0A4E70" stop-opacity=".95"/>
+  <linearGradient id="CAPE" x1=".2" y1="0" x2=".85" y2="1">
+    <stop offset="0" stop-color="#3A0A12"/><stop offset=".3" stop-color="${C.red}"/>
+    <stop offset=".68" stop-color="#8E0F24"/><stop offset="1" stop-color="#4A0611"/>
   </linearGradient>
-  <linearGradient id="${id}Gold" x1="0" y1="0" x2="1" y2="1">
-    <stop offset="0" stop-color="${C.goldLight}"/><stop offset=".35" stop-color="${C.gold}"/>
-    <stop offset=".7" stop-color="${C.goldDeep}"/><stop offset="1" stop-color="${C.goldLight}"/>
+  <linearGradient id="MONO_GOLD" x1="0" y1="0" x2="1" y2="1">
+    <stop offset="0" stop-color="${C.goldLight}"/><stop offset=".28" stop-color="${C.gold}"/>
+    <stop offset=".55" stop-color="${C.goldDeep}"/><stop offset=".8" stop-color="${C.gold}"/>
+    <stop offset="1" stop-color="${C.goldLight}"/>
   </linearGradient>
-  <filter id="${id}Rim" x="-30%" y="-30%" width="160%" height="160%">
-    <feGaussianBlur stdDeviation="2.6" result="b"/>
+  <filter id="ENERGY_GLOW" x="-80%" y="-80%" width="260%" height="260%">
+    <feGaussianBlur stdDeviation="4" result="b"/>
     <feMerge><feMergeNode in="b"/><feMergeNode in="SourceGraphic"/></feMerge>
   </filter>`;
 }
 
-// Anchor points in hero space, used by the crest to place the emblem and
-// the energy stream precisely on the figure.
+// Anchor points in hero space, used to place the emblem and energy stream.
 const ANCHORS = {
-  chest:  { x: 570, y: 268 },
-  head:   { x: 606, y: 196 },
-  fist:   { x: 910, y: 400 },
-  core:   { x: 300, y: 520 }   // where the cape streams
+  chest: { x: 566, y: 300 },
+  head:  { x: 650, y: 165 },
+  fist:  { x: 930, y: 465 },
+  core:  { x: 300, y: 520 },
+  foot:  { x: 740, y: 880 }
 };
 
-module.exports = { hero, heroDefs, ANCHORS };
+module.exports = { hero, heroDefs, ANCHORS, plate };

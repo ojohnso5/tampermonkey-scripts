@@ -40,25 +40,52 @@ Truth powers justice. Justice powers action. Action creates change.
 
 ### The hero
 
-A stylised figure in a forward flight pose — head to the upper right, cape
+A futuristic figure in a forward flight pose — head to the upper right, cape
 streaming to the lower left. Roughly 7.5 heads tall: heroic, not comic-book.
-The figure is deliberately kept **dark** and separated from the field with a
-backlit halo (`#BDEBFF`, 0.6% dilation) so it reads as a silhouette at
-64 px. Gold plating carries the accent; the cape carries the red.
+
+The suit is **modern tactical armour**, not a smooth bodysuit. Every plate is
+drawn four times — a dark gradient body, a vertical shade, a bevelled edge
+that catches the key light from the upper left, and a gold trim line — so the
+figure reads as machined metal rather than flat vector.
+
+| Element | Treatment |
+|---|---|
+| Helmet | Angular shell, gold crown ridge, blue visor, red temple accent, respirator jaw, collar plate |
+| Shoulders | Layered pauldrons with gold trim |
+| Chest | Broad angular carapace, red pectoral accent, gold sternum line |
+| Arms | Upper arm, elbow, forearm gauntlet with gold ribbing, red knuckle accent |
+| Legs | Thigh, knee plate, shin, boot with red accent |
+| Cape | Deep red, shadowed underside, gold seam on the leading edge, red rim light on the trailing edge |
+
+Lighting model: **key** warm gold from the upper left, **fill** electric blue
+from the lower right (bounce off the globe), **rim** activism red along the
+trailing edge. The figure is separated from the field with a backlit halo so
+it reads as a silhouette at 64 px.
 
 ### The chest emblem
 
-J, S and A fused into one interlocking mark. Gold metal structure, an
-electric-blue bolt threading the negative space, and a blue node at the
-crossing point. Legible at 24 px — it is designed to survive as a standalone
-icon if the brand ever splits.
+J, S and A fused into one interlocking mark — and **engraved into the chest
+plate**, not applied on top. The letters are cut into a recessed gold-framed
+panel: dark inset, bevelled gold edges, and an electric-blue bolt threading
+the negative space with a bright node at the crossing point.
+
+It reads as armour detail at full size and as a standalone monogram when the
+figure is cropped away.
 
 ### The globe
 
-The globe is the power source, not decoration. It is a real orthographic
-projection centred on the Americas (`lon0 -78`, `lat0 18`) with simplified
-continent outlines, so North and South America are genuinely visible and
-correctly positioned. It reads as a backlight behind the hero.
+The globe is the power source, not decoration, and it sits **beneath the
+hero** — the figure flies over it, so the globe's glowing core and gold
+continents frame the lower body.
+
+It is a real orthographic projection centred on the Americas (`lon0 -78`,
+`lat0 18`), so North and South America are genuinely visible and correctly
+positioned. Gold continents sit on an electric-blue luminous core inside a
+gold frame with a dashed orbital ring.
+
+**Global network energy lines wrap around the sphere**: projected latitude
+bands plus four tilted great-circle arcs, with bright nodes scattered across
+the lattice. Blue energy radiates upward from the core toward the hero.
 
 ---
 
@@ -163,7 +190,7 @@ assemble in any editor.
 
 **Do**
 - Keep the crest's proportions — the hero at ~80% of the disc, the globe
-  behind it, the emblem on the chest
+  beneath it, the emblem engraved on the chest
 - Use the crest as a complete unit; never crop the gold ring
 - Pair red with gold, or blue with gold. Never red-on-blue
 - Keep headlines to four words or fewer

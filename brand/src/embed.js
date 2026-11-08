@@ -17,7 +17,7 @@ const TARGET = path.join(ROOT, 'scripts', 'justice-society-studio.user.js');
 
 /** file name in brand/out  ->  key in the userscript's BRAND_ASSETS map */
 const MAP = {
-  'logo-crest-transparent.svg': 'crest.svg',
+  'logo-crest.svg': 'crest.svg',
   'watermark.svg': 'watermark.svg',
   'banner.svg': 'banner.svg',
   'banner-new-episode.svg': 'banner-new-episode.svg',
