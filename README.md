@@ -24,24 +24,64 @@ Click any script link below to install directly in Tampermonkey:
 | **Justice Society of Activism — Channel** | Full channel landing page: hero, featured documentary, tabs for Videos / Shorts / Live / Playlists / Community / About / Support, membership tiers, working composer and Studio & Monetization panel | [justice-society.html](justice-society.html) |
 | **YouTube Page** | Generic YouTube-style UI (top bar, sidebar, chip filters, search, video grid, player modal). No dependencies, works offline. | [youtube-page.html](youtube-page.html) |
 
-### Brand Assets — Justice Society of Activism
+### Brand Package — Justice Society of Activism
+
+A complete, production-ready identity: superhero symbolism used as a metaphor
+for accountability, truth, leadership and action. Full specifications, usage
+rules and rationale: **[brand/BRAND-GUIDELINES.md](brand/BRAND-GUIDELINES.md)**.
 
 | Asset | Size | File |
 |-------|------|------|
-| Channel logo (seal) | 800×800 | [brand/logo.svg](brand/logo.svg) |
-| Profile picture | 800×800 | [brand/avatar.svg](brand/avatar.svg) |
-| Channel banner | 2560×1440 | [brand/banner.svg](brand/banner.svg) |
-| Banner — new episode | 2560×1440 | [brand/banner-new-episode.svg](brand/banner-new-episode.svg) |
-| Banner — season two | 2560×1440 | [brand/banner-season.svg](brand/banner-season.svg) |
-| Banner — membership | 2560×1440 | [brand/banner-membership.svg](brand/banner-membership.svg) |
-| Banner — paper trail | 2560×1440 | [brand/banner-report.svg](brand/banner-report.svg) |
+| Primary crest (icon only) | 1024² | [brand/out/logo-crest.svg](brand/out/logo-crest.svg) |
+| Crest — transparent | 1024² | [brand/out/logo-crest-transparent.svg](brand/out/logo-crest-transparent.svg) |
+| Crest — for light backgrounds | 1024² | [brand/out/logo-crest-dark.svg](brand/out/logo-crest-dark.svg) |
+| Profile picture (avatar) | 800→64 | [brand/out/avatar-800.png](brand/out/avatar-800.png) |
+| Channel banner | 2560×1440 | [brand/out/banner.svg](brand/out/banner.svg) |
+| Banner — new episode | 2560×1440 | [brand/out/banner-new-episode.svg](brand/out/banner-new-episode.svg) |
+| Banner — season two | 2560×1440 | [brand/out/banner-season-two.svg](brand/out/banner-season-two.svg) |
+| Banner — membership | 2560×1440 | [brand/out/banner-membership.svg](brand/out/banner-membership.svg) |
+| Banner — paper trail | 2560×1440 | [brand/out/banner-paper-trail.svg](brand/out/banner-paper-trail.svg) |
+| Video watermark (transparent) | 512² | [brand/out/watermark.svg](brand/out/watermark.svg) |
+| End screen | 1920×1080 | [brand/out/end-screen.svg](brand/out/end-screen.svg) |
+| Intro animation (4.6s, SMIL) | 1920×1080 | [brand/out/intro.svg](brand/out/intro.svg) |
+| Thumbnail system | 1280×720 | [brand/out/thumb-follow-money.svg](brand/out/thumb-follow-money.svg) |
+| App icon | 192 / 512 | [brand/out/icon-512.svg](brand/out/icon-512.svg) |
 
-**Color tokens** — Justice Red `#ef233c`, Justice Gold `#ffb703`, Ink `#0a0a0c`, Panel `#16161c`
+**Colour tokens** — Midnight Black `#0B0B0F` · Activism Red `#E11937` ·
+Justice Gold `#D4AF37` · Truth Blue `#00AEEF`
 
-> **Note on the banner:** YouTube crops banner art differently on every device. The
-> wordmark and seal are positioned inside YouTube's safe area (x 507–2053, y 423–1017)
-> so nothing is cut off on TVs, desktops, or phones. Regenerate all variants with
-> `node scripts/gen-banners.js`.
+> **Banner safe area.** YouTube crops banner art differently on every device.
+> The wordmark and crest sit inside the worst-case crop (x 507–2053,
+> y 423–1017). This is enforced by a test, not by hand:
+> `node brand/src/safearea.js` renders each banner and measures the actual
+> pixel bounding box of the crest and type. Type is auto-fitted to fit:
+> `node brand/src/fit.js`.
+
+#### Rebuilding the brand
+
+```bash
+node brand/build.js            # SVGs only
+node brand/build.js --png      # SVGs + PNG renders
+node brand/src/fit.js          # re-fit banner type to the safe area
+node brand/src/safearea.js     # verify the crop
+node brand/src/embed.js        # inline the art into the userscript
+```
+
+Sources live in [`brand/src/`](brand/src) — one palette, one globe projection,
+one hero, one emblem — so every asset stays consistent.
+
+| Module | Responsibility |
+|--------|----------------|
+| `palette.js` | The four brand tokens and derived tones |
+| `geo.js` | Orthographic globe projection with the Americas visible |
+| `hero.js` | The hero figure and its anchors |
+| `emblem.js` | The JSA chest monogram |
+| `crest.js` | Composes the crest: halo → ring → globe → hero → emblem |
+| `banner.js` | Banner layout and variants |
+| `watermark.js` | Globe + emblem watermark |
+| `thumbnail.js` | Thumbnail system |
+| `endscreen.js` | End screen |
+| `intro.js` | Animated intro |
 
 ### 🎨 Decorating your channel
 

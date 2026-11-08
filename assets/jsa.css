@@ -1,8 +1,10 @@
+/* JSA brand tokens — see brand/src/palette.js */
 :root{
-  --bg:#08080a; --bg2:#101014; --panel:#16161c; --panel2:#1d1d25; --hover:#25252f;
+  --bg:#0B0B0F; --bg2:#101014; --panel:#16161c; --panel2:#1d1d25; --hover:#25252f;
   --line:#2a2a34; --line2:#3a3a46;
   --text:#f2f2f5; --dim:#9d9dab; --dim2:#6f6f7d;
-  --red:#ef233c; --red-dim:#b8192c; --gold:#ffb703; --teal:#00b4d8; --green:#00c07f;
+  --red:#E11937; --red-dim:#8E0F24; --gold:#D4AF37; --gold-light:#F2DFA0; --gold-deep:#8A6D1F;
+  --blue:#00AEEF; --blue-light:#7FE0FF; --teal:#00AEEF; --green:#00c07f;
   --yt:#ff0000;
   --topbar:56px; --side:250px;
   --shadow:0 18px 50px rgba(0,0,0,.55);
@@ -64,6 +66,7 @@ img{display:block;max-width:100%}
 .banner-inner{position:relative;z-index:2;display:flex;align-items:center;gap:20px;padding:0 clamp(16px,4vw,56px)}
 .banner-seal{width:clamp(46px,6vw,88px);flex:0 0 auto;filter:drop-shadow(0 6px 18px rgba(0,0,0,.55))}
 .banner-seal svg{width:100%;height:auto;display:block}
+.banner-seal img{width:100%;height:auto;display:block;border-radius:50%}
 .banner-word{display:flex;flex-direction:column;line-height:.94}
 .banner-word .bw1{font:900 clamp(20px,3.4vw,50px)/1 "Archivo","Roboto",Arial,sans-serif;letter-spacing:-1.6px;color:#f5f5f7}
 .banner-word .bw2{font:900 clamp(20px,3.4vw,50px)/1 "Archivo","Roboto",Arial,sans-serif;letter-spacing:-1.6px;color:var(--red)}

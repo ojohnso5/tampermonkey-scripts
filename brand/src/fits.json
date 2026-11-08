@@ -1,0 +1,27 @@
+{
+  "primary": {
+    "variant": "primary",
+    "typeScale": 1,
+    "tagScale": 0.973
+  },
+  "new-episode": {
+    "variant": "new-episode",
+    "typeScale": 0.982,
+    "tagScale": 0.973
+  },
+  "season-two": {
+    "variant": "season-two",
+    "typeScale": 1,
+    "tagScale": 0.674
+  },
+  "membership": {
+    "variant": "membership",
+    "typeScale": 0.966,
+    "tagScale": 0.751
+  },
+  "paper-trail": {
+    "variant": "paper-trail",
+    "typeScale": 1,
+    "tagScale": 0.7
+  }
+}

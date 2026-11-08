@@ -1,0 +1,97 @@
+{
+  "brand": "Justice Society of Activism",
+  "generated": "2026-11-08T20:52:41.987Z",
+  "palette": {
+    "midnight": "#0B0B0F",
+    "red": "#E11937",
+    "gold": "#D4AF37",
+    "blue": "#00AEEF"
+  },
+  "assets": [
+    {
+      "svg": "logo-crest.svg",
+      "png": "logo-crest-1024.png",
+      "size": "1024x1024"
+    },
+    {
+      "svg": "logo-crest-transparent.svg",
+      "png": "logo-crest-transparent-1024.png",
+      "size": "1024x1024"
+    },
+    {
+      "svg": "logo-crest-dark.svg",
+      "png": "logo-crest-dark-1024.png",
+      "size": "1024x1024"
+    },
+    {
+      "svg": "banner.svg",
+      "png": "banner-2560x1440.png",
+      "size": "2560x1440"
+    },
+    {
+      "svg": "banner-new-episode.svg",
+      "png": "banner-new-episode-2560x1440.png",
+      "size": "2560x1440"
+    },
+    {
+      "svg": "banner-season-two.svg",
+      "png": "banner-season-two-2560x1440.png",
+      "size": "2560x1440"
+    },
+    {
+      "svg": "banner-membership.svg",
+      "png": "banner-membership-2560x1440.png",
+      "size": "2560x1440"
+    },
+    {
+      "svg": "banner-paper-trail.svg",
+      "png": "banner-paper-trail-2560x1440.png",
+      "size": "2560x1440"
+    },
+    {
+      "svg": "watermark.svg",
+      "png": "watermark-512.png",
+      "size": "512x512"
+    },
+    {
+      "svg": "end-screen.svg",
+      "png": "end-screen-1920x1080.png",
+      "size": "1920x1080"
+    },
+    {
+      "svg": "thumb-exposed.svg",
+      "png": "thumb-exposed-1280x720.png",
+      "size": "1280x720"
+    },
+    {
+      "svg": "thumb-who-profits.svg",
+      "png": "thumb-who-profits-1280x720.png",
+      "size": "1280x720"
+    },
+    {
+      "svg": "thumb-they-lied.svg",
+      "png": "thumb-they-lied-1280x720.png",
+      "size": "1280x720"
+    },
+    {
+      "svg": "thumb-accountability.svg",
+      "png": "thumb-accountability-1280x720.png",
+      "size": "1280x720"
+    },
+    {
+      "svg": "thumb-follow-money.svg",
+      "png": "thumb-follow-money-1280x720.png",
+      "size": "1280x720"
+    },
+    {
+      "svg": "icon-192.svg",
+      "png": "icon-192.png",
+      "size": "192x192"
+    },
+    {
+      "svg": "icon-512.svg",
+      "png": "icon-512.png",
+      "size": "512x512"
+    }
+  ]
+}
