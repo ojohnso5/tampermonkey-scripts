@@ -16,6 +16,7 @@
 const { C, rgba } = require('./palette');
 const geo = require('./geo');
 const { emblem, emblemDefs } = require('./emblem');
+const mat = require('./materials');
 
 // The monogram is drawn in a 0..200 box but its ink actually spans
 // x 18-200, y 30-152. These are the true bounds, used to centre it.
@@ -35,11 +36,7 @@ function watermark(o) {
     <stop offset=".78" stop-color="#0A6394"/>
     <stop offset="1" stop-color="#053B5C"/>
   </radialGradient>
-  <linearGradient id="${id}Gold" x1="0" y1="0" x2="1" y2="1">
-    <stop offset="0" stop-color="#F6E7B4"/><stop offset=".22" stop-color="${C.gold}"/>
-    <stop offset=".48" stop-color="${C.goldDeep}"/><stop offset=".7" stop-color="${C.gold}"/>
-    <stop offset="1" stop-color="#F6E7B4"/>
-  </linearGradient>
+  ${mat.metalGradient(id + 'Gold', { angle: 'x1="0" y1="0" x2="1" y2="1"', bands: 7 })}
   <radialGradient id="${id}RedGlow" cx=".5" cy=".5" r=".5">
     <stop offset="0" stop-color="${C.red}" stop-opacity=".30"/>
     <stop offset=".42" stop-color="${C.red}" stop-opacity=".11"/>

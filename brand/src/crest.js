@@ -13,6 +13,7 @@ const { C, rgba } = require('./palette');
 const geo = require('./geo');
 const { hero, heroDefs, ANCHORS } = require('./hero');
 const { layout } = require('./crest-layout');
+const mat = require('./materials');
 const { emblem, emblemDefs } = require('./emblem');
 
 function crest(o) {
@@ -42,16 +43,9 @@ function crest(o) {
     <stop offset=".965" stop-color="${C.red}" stop-opacity=".16"/>
     <stop offset="1" stop-color="${C.red}" stop-opacity="0"/>
   </radialGradient>
-  <linearGradient id="${id}RingGold" x1=".05" y1="0" x2=".95" y2="1">
-    <stop offset="0" stop-color="${C.goldLight}"/>
-    <stop offset=".14" stop-color="${C.gold}"/>
-    <stop offset=".30" stop-color="${C.goldDeep}"/>
-    <stop offset=".44" stop-color="${C.goldLight}"/>
-    <stop offset=".58" stop-color="${C.gold}"/>
-    <stop offset=".76" stop-color="${C.goldDeep}"/>
-    <stop offset=".9" stop-color="${C.gold}"/>
-    <stop offset="1" stop-color="${C.goldLight}"/>
-  </linearGradient>
+  ${mat.metalGradient(id + 'RingGold', { angle: 'x1=".05" y1="0" x2=".95" y2="1"' })}
+  ${mat.ringMask(id + 'RingMask', cx, cy, S * 0.468, S * 0.036)}
+  ${mat.ringMask(id + 'RingMaskInner', cx, cy, S * 0.432, S * 0.006)}
   <linearGradient id="${id}RingInner" x1="0" y1="0" x2="1" y2="1">
     <stop offset="0" stop-color="${C.goldLight}"/><stop offset="1" stop-color="${C.goldDeep}"/>
   </linearGradient>
@@ -214,9 +208,17 @@ function crest(o) {
   // ================= RINGS =================
   const rOuter = LAY.ring.outer, rInner = LAY.ring.inner;
   if (!o.flatRing) {
-    // Brushed-metal grain on the gold ring
+    // The gold ring: anisotropic reflection, brushed grain, then a hard
+    // specular edge where the key light lands.
     layers.push(`<circle cx="${cx}" cy="${cy}" r="${rOuter}" fill="none" stroke="url(#${id}RingGold)" stroke-width="${S*0.036}"/>`);
-    layers.push(`<circle cx="${cx}" cy="${cy}" r="${rOuter}" fill="none" stroke="#000" stroke-width="${S*0.036}" opacity=".22" filter="url(#${id}Grain)" style="mix-blend-mode:overlay"/>`);
+    layers.push(`<g mask="url(#${id}RingMask)" opacity=".9">
+      ${mat.brushedStreaks({ cx, cy, r: rOuter, width: S * 0.036, count: 150, angle: -24, color: '#FFF3CF', opacity: 0.30, seed: 5150 })}
+      ${mat.brushedStreaks({ cx, cy, r: rOuter, width: S * 0.036, count: 90, angle: -24, color: '#5A4410', opacity: 0.26, seed: 9931 })}
+    </g>`);
+    layers.push(`<g mask="url(#${id}RingMask)">
+      ${mat.specularArc({ cx, cy, r: rOuter, width: S * 0.013, from: -142, to: -68, opacity: 0.9 })}
+    </g>`);
+    layers.push(`<circle cx="${cx}" cy="${cy}" r="${rOuter}" fill="none" stroke="#000" stroke-width="${S*0.036}" opacity=".20" filter="url(#${id}Grain)" style="mix-blend-mode:overlay"/>`);
   } else {
     layers.push(`<circle cx="${cx}" cy="${cy}" r="${rOuter}" fill="none" stroke="${C.gold}" stroke-width="${S*0.036}"/>`);
   }

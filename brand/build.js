@@ -70,6 +70,22 @@ add('watermark.svg', watermark({ size: 512 }),
 add('watermark-preview.svg', require('./src/watermark').watermarkPreview({}),
   { file: 'watermark-preview.png', width: 960, height: 1620, background: '#111111' });
 
+/* ---- 4b. Channel watermark for YouTube's video-watermark slot -------- */
+// 150x150 PNG, transparent, under 1MB. YouTube makes this automatically
+// clickable — it links to the channel. Rendered at 300x300 too for high-DPI.
+const { channelWatermark } = require('./src/channel-watermark');
+add('channel-watermark-150.svg', channelWatermark({ size: 150 }),
+  { file: 'channel-watermark-150.png', width: 150, height: 150, transparent: true });
+add('channel-watermark-300.svg', channelWatermark({ size: 300 }),
+  { file: 'channel-watermark-300.png', width: 300, height: 300, transparent: true });
+
+/* ---- 4c. Lower-thirds ------------------------------------------------ */
+const { lowerThird } = require('./src/lower-third');
+add('lower-third-episode.svg', lowerThird({ variant: 'episode', kicker: 'EPISODE 01', title: 'THE QUIET AUCTION' }),
+  { file: 'lower-third-episode-1920x240.png', width: 1920, height: 240 });
+add('lower-third-live.svg', lowerThird({ variant: 'live', title: 'TOWN HALL: THE HOUSING BUDGET' }),
+  { file: 'lower-third-live-1920x240.png', width: 1920, height: 240 });
+
 /* ---- 5. End screen ----------------------------------------------- */
 add('end-screen.svg', endScreen({ width: 1920, height: 1080 }),
   { file: 'end-screen-1920x1080.png', width: 1920, height: 1080 });

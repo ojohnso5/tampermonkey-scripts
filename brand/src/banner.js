@@ -15,6 +15,7 @@ const { faces } = require('./fonts');
 const { crest } = require('./crest');
 const geo = require('./geo');
 const { AREA } = require('./safearea-spec');
+const mat = require('./materials');
 
 const VARIANTS = {
   primary: {
@@ -60,11 +61,7 @@ function banner(o) {
     <stop offset="0" stop-color="${C.blue}" stop-opacity=".22"/>
     <stop offset="1" stop-color="${C.blue}" stop-opacity="0"/>
   </radialGradient>
-  <linearGradient id="${id}GoldType" x1="0" y1="0" x2="1" y2=".6">
-    <stop offset="0" stop-color="#F6E7B4"/><stop offset=".22" stop-color="${C.gold}"/>
-    <stop offset=".46" stop-color="${C.goldDeep}"/><stop offset=".62" stop-color="${C.goldLight}"/>
-    <stop offset=".82" stop-color="${C.gold}"/><stop offset="1" stop-color="${C.goldDeep}"/>
-  </linearGradient>
+  ${mat.metalGradient(id + 'GoldType', { angle: 'x1="0" y1="0" x2="1" y2=".55"', bands: 9 })}
   <linearGradient id="${id}Energy" x1="0" y1="0" x2="1" y2="0">
     <stop offset="0" stop-color="${C.blue}" stop-opacity="0"/>
     <stop offset=".18" stop-color="${C.blue}" stop-opacity=".9"/>

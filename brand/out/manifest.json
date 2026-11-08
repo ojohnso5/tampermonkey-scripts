@@ -1,6 +1,6 @@
 {
   "brand": "Justice Society of Activism",
-  "generated": "2026-11-08T21:26:52.726Z",
+  "generated": "2026-11-08T22:15:17.159Z",
   "palette": {
     "midnight": "#0B0B0F",
     "red": "#E11937",
@@ -57,6 +57,26 @@
       "svg": "watermark-preview.svg",
       "png": "watermark-preview.png",
       "size": "960x1620"
+    },
+    {
+      "svg": "channel-watermark-150.svg",
+      "png": "channel-watermark-150.png",
+      "size": "150x150"
+    },
+    {
+      "svg": "channel-watermark-300.svg",
+      "png": "channel-watermark-300.png",
+      "size": "300x300"
+    },
+    {
+      "svg": "lower-third-episode.svg",
+      "png": "lower-third-episode-1920x240.png",
+      "size": "1920x240"
+    },
+    {
+      "svg": "lower-third-live.svg",
+      "png": "lower-third-live-1920x240.png",
+      "size": "1920x240"
     },
     {
       "svg": "end-screen.svg",

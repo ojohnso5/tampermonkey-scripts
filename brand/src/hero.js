@@ -20,6 +20,7 @@
  *   far boot ~ (300, 900)          near boot ~ (740, 880)
  */
 const { C, rgba } = require('./palette');
+const mat = require('./materials');
 
 /**
  * A single armour plate with bevelled edges.
@@ -87,7 +88,7 @@ function hero(o) {
   g.push(`<rect x="30" y="12" width="140" height="176" rx="12" fill="rgba(0,0,0,.55)"/>`);
   g.push(`<rect x="30" y="12" width="140" height="176" rx="12" fill="none" stroke="${rgba(GD,.5)}" stroke-width="2"/>`);
   g.push(`<g fill="url(#MONO_GOLD)" stroke="rgba(0,0,0,.9)" stroke-width="4"><path d="${MONO_J}"/><path d="${MONO_S}"/><path d="${MONO_A}" fill-rule="evenodd"/></g>`);
-  g.push(`<g fill="none" stroke="#F6E7B4" stroke-width="2" opacity=".8"><path d="M 74 44 L 74 112 C 74 132, 62 144, 44 144 C 30 144, 21 137, 18 128"/><path d="M 118 40 C 106 33, 92 30, 80 33 C 66 37, 58 47, 60 60"/><path d="M 126 152 L 154 44 L 178 44 L 200 152"/></g>`);
+  g.push(`<g fill="none" stroke="#FFF6DC" stroke-width="1.4" opacity=".9"><path d="M 74 44 L 74 112 C 74 132, 62 144, 44 144 C 30 144, 21 137, 18 128"/><path d="M 118 40 C 106 33, 92 30, 80 33 C 66 37, 58 47, 60 60"/><path d="M 126 152 L 154 44 L 178 44 L 200 152"/></g>`);
   g.push(`<g filter="url(#ENERGY_GLOW)"><path d="M 66 26 L 50 80 L 72 80 L 56 140 L 98 74 L 76 74 L 92 26 Z" fill="${BL}" opacity=".95"/><circle cx="66" cy="80" r="6" fill="#BDEBFF"/></g>`);
   g.push(`</g>`);
 
@@ -161,11 +162,7 @@ function heroDefs(id) {
     <stop offset="0" stop-color="#3A0A12"/><stop offset=".3" stop-color="${C.red}"/>
     <stop offset=".68" stop-color="#8E0F24"/><stop offset="1" stop-color="#4A0611"/>
   </linearGradient>
-  <linearGradient id="MONO_GOLD" x1="0" y1="0" x2="1" y2="1">
-    <stop offset="0" stop-color="${C.goldLight}"/><stop offset=".28" stop-color="${C.gold}"/>
-    <stop offset=".55" stop-color="${C.goldDeep}"/><stop offset=".8" stop-color="${C.gold}"/>
-    <stop offset="1" stop-color="${C.goldLight}"/>
-  </linearGradient>
+  ${mat.metalGradient('MONO_GOLD', { angle: 'x1="0" y1="0" x2="1" y2="1"', bands: 7 })}
   <filter id="ENERGY_GLOW" x="-80%" y="-80%" width="260%" height="260%">
     <feGaussianBlur stdDeviation="4" result="b"/>
     <feMerge><feMergeNode in="b"/><feMergeNode in="SourceGraphic"/></feMerge>

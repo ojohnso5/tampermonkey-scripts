@@ -19,11 +19,7 @@
     <stop offset=".78" stop-color="#0A6394"/>
     <stop offset="1" stop-color="#053B5C"/>
   </radialGradient>
-  <linearGradient id="WPGold" x1="0" y1="0" x2="1" y2="1">
-    <stop offset="0" stop-color="#F6E7B4"/><stop offset=".22" stop-color="#D4AF37"/>
-    <stop offset=".48" stop-color="#8A6D1F"/><stop offset=".7" stop-color="#D4AF37"/>
-    <stop offset="1" stop-color="#F6E7B4"/>
-  </linearGradient>
+  <linearGradient id="WPGold" x1="0" y1="0" x2="1" y2="1"><stop offset="0.000" stop-color="#F7E9BE" stop-opacity="1"/><stop offset="0.143" stop-color="#D4AF37" stop-opacity="1"/><stop offset="0.286" stop-color="#6E551A" stop-opacity="1"/><stop offset="0.429" stop-color="#F7E9BE" stop-opacity="1"/><stop offset="0.571" stop-color="#D4AF37" stop-opacity="1"/><stop offset="0.714" stop-color="#D4AF37" stop-opacity="1"/><stop offset="0.857" stop-color="#F7E9BE" stop-opacity="1"/><stop offset="1.000" stop-color="#D4AF37" stop-opacity="1"/></linearGradient>
   <radialGradient id="WPRedGlow" cx=".5" cy=".5" r=".5">
     <stop offset="0" stop-color="#E11937" stop-opacity=".30"/>
     <stop offset=".42" stop-color="#E11937" stop-opacity=".11"/>
@@ -124,11 +120,7 @@
     <stop offset=".78" stop-color="#0A6394"/>
     <stop offset="1" stop-color="#053B5C"/>
   </radialGradient>
-  <linearGradient id="WPGold" x1="0" y1="0" x2="1" y2="1">
-    <stop offset="0" stop-color="#F6E7B4"/><stop offset=".22" stop-color="#D4AF37"/>
-    <stop offset=".48" stop-color="#8A6D1F"/><stop offset=".7" stop-color="#D4AF37"/>
-    <stop offset="1" stop-color="#F6E7B4"/>
-  </linearGradient>
+  <linearGradient id="WPGold" x1="0" y1="0" x2="1" y2="1"><stop offset="0.000" stop-color="#F7E9BE" stop-opacity="1"/><stop offset="0.143" stop-color="#D4AF37" stop-opacity="1"/><stop offset="0.286" stop-color="#6E551A" stop-opacity="1"/><stop offset="0.429" stop-color="#F7E9BE" stop-opacity="1"/><stop offset="0.571" stop-color="#D4AF37" stop-opacity="1"/><stop offset="0.714" stop-color="#D4AF37" stop-opacity="1"/><stop offset="0.857" stop-color="#F7E9BE" stop-opacity="1"/><stop offset="1.000" stop-color="#D4AF37" stop-opacity="1"/></linearGradient>
   <radialGradient id="WPRedGlow" cx=".5" cy=".5" r=".5">
     <stop offset="0" stop-color="#E11937" stop-opacity=".30"/>
     <stop offset=".42" stop-color="#E11937" stop-opacity=".11"/>
@@ -229,11 +221,7 @@
     <stop offset=".78" stop-color="#0A6394"/>
     <stop offset="1" stop-color="#053B5C"/>
   </radialGradient>
-  <linearGradient id="WPGold" x1="0" y1="0" x2="1" y2="1">
-    <stop offset="0" stop-color="#F6E7B4"/><stop offset=".22" stop-color="#D4AF37"/>
-    <stop offset=".48" stop-color="#8A6D1F"/><stop offset=".7" stop-color="#D4AF37"/>
-    <stop offset="1" stop-color="#F6E7B4"/>
-  </linearGradient>
+  <linearGradient id="WPGold" x1="0" y1="0" x2="1" y2="1"><stop offset="0.000" stop-color="#F7E9BE" stop-opacity="1"/><stop offset="0.143" stop-color="#D4AF37" stop-opacity="1"/><stop offset="0.286" stop-color="#6E551A" stop-opacity="1"/><stop offset="0.429" stop-color="#F7E9BE" stop-opacity="1"/><stop offset="0.571" stop-color="#D4AF37" stop-opacity="1"/><stop offset="0.714" stop-color="#D4AF37" stop-opacity="1"/><stop offset="0.857" stop-color="#F7E9BE" stop-opacity="1"/><stop offset="1.000" stop-color="#D4AF37" stop-opacity="1"/></linearGradient>
   <radialGradient id="WPRedGlow" cx=".5" cy=".5" r=".5">
     <stop offset="0" stop-color="#E11937" stop-opacity=".30"/>
     <stop offset=".42" stop-color="#E11937" stop-opacity=".11"/>
