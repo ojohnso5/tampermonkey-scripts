@@ -130,7 +130,23 @@ The script then, on your channel page:
 > The script also targets YouTube's current DOM (`yt-image-banner-view-model`)
 > with fallbacks for the older `ytd-c4-banner-and-avatar-renderer` structure.
 
-### 💰 Monetization notes
+### 🚀 Setup Wizard
+
+Automate the YouTube Studio upload process:
+
+```bash
+node brand/setup-wizard.js              # interactive checklist
+node brand/setup-wizard.js --validate   # check all assets
+node brand/setup-wizard.js --userscript # install the userscript
+node brand/setup-wizard.js --open       # open Studio pages
+node brand/setup-wizard.js --rebuild    # regenerate all assets
+```
+
+The wizard validates every asset against YouTube's size limits, generates a
+personalized checklist with direct links to each Studio section, and can
+automatically open the Studio pages and install the userscript.
+
+## 💰 Monetization notes
 
 YouTube has no public API that lets a script create a channel or upload on your
 behalf — so nothing in this repo tries to fake one. The Justice Society toolkit is
