@@ -31,12 +31,45 @@ Click any script link below to install directly in Tampermonkey:
 | Channel logo (seal) | 800×800 | [brand/logo.svg](brand/logo.svg) |
 | Profile picture | 800×800 | [brand/avatar.svg](brand/avatar.svg) |
 | Channel banner | 2560×1440 | [brand/banner.svg](brand/banner.svg) |
+| Banner — new episode | 2560×1440 | [brand/banner-new-episode.svg](brand/banner-new-episode.svg) |
+| Banner — season two | 2560×1440 | [brand/banner-season.svg](brand/banner-season.svg) |
+| Banner — membership | 2560×1440 | [brand/banner-membership.svg](brand/banner-membership.svg) |
+| Banner — paper trail | 2560×1440 | [brand/banner-report.svg](brand/banner-report.svg) |
 
 **Color tokens** — Justice Red `#ef233c`, Justice Gold `#ffb703`, Ink `#0a0a0c`, Panel `#16161c`
 
 > **Note on the banner:** YouTube crops banner art differently on every device. The
-> wordmark and seal in `brand/banner.svg` are positioned inside YouTube's safe area
-> (x 507–2053, y 423–1017) so nothing is cut off on TVs, desktops, or phones.
+> wordmark and seal are positioned inside YouTube's safe area (x 507–2053, y 423–1017)
+> so nothing is cut off on TVs, desktops, or phones. Regenerate all variants with
+> `node scripts/gen-banners.js`.
+
+### 🎨 Decorating your channel
+
+The userscript decorates the **real** youtube.com channel page for you:
+
+1. Install the **Justice Society of Activism — Channel Studio** script.
+2. Visit your own channel page (`youtube.com/@yourhandle`).
+3. Click **Channel setup** (next to the red Studio button).
+4. Press **Save & apply**.
+
+The script then, on your channel page:
+- detects and remembers your **handle and channel ID** automatically
+- swaps in your chosen **banner** (pick any of the 5 variants, live preview)
+- replaces the **avatar/logo** with the JSA seal
+- recolors the **Subscribe** button in Justice Red
+- inserts the **mission ribbon** — "Evidence. Amplitude. Action." plus
+  *Support the work* and *Public records database* links
+
+> **Two YouTube-specific problems this script already solves**
+> 1. **Trusted Types.** YouTube sends `require-trusted-types-for 'script'`, which
+>    makes any `element.innerHTML = …` throw. The script creates its own
+>    Trusted Types policy and routes all HTML insertion through it.
+> 2. **Image CSP.** YouTube's `img-src` blocks `raw.githubusercontent.com`, so brand
+>    art is embedded in the script as data URIs — no network request, no
+>    dependency on this repo being published.
+>
+> The script also targets YouTube's current DOM (`yt-image-banner-view-model`)
+> with fallbacks for the older `ytd-c4-banner-and-avatar-renderer` structure.
 
 ### 💰 Monetization notes
 
