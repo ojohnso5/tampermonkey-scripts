@@ -45,6 +45,10 @@ Click any script link below to install directly in Tampermonkey:
 
 ### 🎨 Decorating your channel
 
+**This channel is live:** <https://www.youtube.com/@JusticeSocietyofActivism>
+(`UCxuSW9Si0AGLCk_tM6b1SQA`) — these are the script's defaults, so it works
+out of the box with no configuration.
+
 The userscript decorates the **real** youtube.com channel page for you:
 
 1. Install the **Justice Society of Activism — Channel Studio** script.
@@ -59,6 +63,8 @@ The script then, on your channel page:
 - recolors the **Subscribe** button in Justice Red
 - inserts the **mission ribbon** — "Evidence. Amplitude. Action." plus
   *Support the work* and *Public records database* links
+- **creates a banner from scratch** if the channel has never had one — a brand
+  new channel has no banner element in YouTube's DOM at all
 
 > **Two YouTube-specific problems this script already solves**
 > 1. **Trusted Types.** YouTube sends `require-trusted-types-for 'script'`, which

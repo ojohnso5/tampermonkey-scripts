@@ -62,8 +62,9 @@
   };
 
   const DEFAULTS = {
-    channelHandle: '@justicesociety',
-    channelUrl: 'https://www.youtube.com/@justicesociety',
+    channelHandle: '@JusticeSocietyofActivism',
+    channelUrl: 'https://www.youtube.com/@JusticeSocietyofActivism',
+    channelId: 'UCxuSW9Si0AGLCk_tM6b1SQA',
     memberFloor: 4000,
     memberSubFloor: 1000,
     targetCpm: 7.4,
@@ -71,8 +72,7 @@
     sponsorRate: 1800,
     applyBranding: false,
     bannerVariant: 'banner.svg',
-    decorate: true,
-    channelId: ''
+    decorate: true
   };
 
   const cfg = Object.assign({}, DEFAULTS, GM_getValue('jsaConfig', {}));
@@ -164,6 +164,11 @@
       background:linear-gradient(0deg,rgba(0,0,0,.92),rgba(0,0,0,0));
       font:700 12px/1.2 Roboto,Arial,sans-serif;color:#fff}
     .jsa-banner em{display:block;font:400 11px/1.3 Roboto,Arial,sans-serif;color:#cfcfd8;font-style:normal;margin-top:2px}
+    /* banner created for channels that have none */
+    #jsa-banner{width:100%;height:clamp(120px,13vw,200px);background-size:cover;background-position:center;
+      border-bottom:1px solid ${BRAND.line2};position:relative}
+    #jsa-banner::after{content:"";position:absolute;inset:0;
+      background:linear-gradient(180deg,transparent 55%,rgba(0,0,0,.55) 100%)}
     /* mission ribbon injected on the channel page */
     #jsa-ribbon{display:flex;align-items:center;gap:14px;flex-wrap:wrap;
       background:linear-gradient(120deg,${BRAND.red}22,${BRAND.panel} 55%,${BRAND.gold}18);
@@ -539,7 +544,8 @@
           '<span style="width:20px;height:20px;border-radius:5px;background:' + c[1] + ';border:1px solid ' + BRAND.line2 + '"></span>' + c[0] + '</span>').join('') +
       '</div></div>',
 
-      '<a class="jsa-btn jsa-btn-primary" href="https://studio.youtube.com/channel/' + encodeURIComponent(cfg.channelId || 'UC_REPLACE_ME') + '/editing" target="_blank" rel="noopener" style="flex:1;justify-content:center;margin-top:22px">Open channel customization</a>');
+      '<a class="jsa-btn jsa-btn-primary" href="https://studio.youtube.com/channel/' + encodeURIComponent(cfg.channelId || 'UC_REPLACE_ME') + '/editing" target="_blank" rel="noopener" style="flex:1;justify-content:center;margin-top:22px">Open channel customization</a>' +
+      '<a class="jsa-btn" href="' + esc(cfg.channelUrl || 'https://www.youtube.com/@JusticeSocietyofActivism') + '" target="_blank" rel="noopener" style="flex:1;justify-content:center">View my channel</a>');
 
     $$('[data-asset]').forEach(b => b.addEventListener('click', () => {
       const name = b.dataset.asset.split('/').pop();
@@ -679,6 +685,32 @@
     return false;
   }
 
+  /** Build a banner from scratch for channels that have never uploaded one. */
+  function createBanner(url) {
+    let bar = document.querySelector('#jsa-banner');
+    if (!bar) {
+      const host = document.querySelector(
+        'ytd-browse #header, ytd-browse, #page-manager, ytd-app'
+      );
+      if (!host) return false;
+      bar = document.createElement('div');
+      bar.id = 'jsa-banner';
+      bar.setAttribute('role', 'img');
+      bar.setAttribute('aria-label', 'Justice Society of Activism channel banner');
+      // Insert above the channel header block so it reads like a real banner.
+      const anchorEl = document.querySelector(
+        'ytd-browse #header, ytd-two-column-browse-results-renderer, ytd-browse'
+      );
+      const target = anchorEl || host;
+      target.parentElement ? target.parentElement.insertBefore(bar, target) : target.appendChild(bar);
+    }
+    bar.style.backgroundImage = 'url("' + url + '")';
+    bar.style.backgroundSize = 'cover';
+    bar.style.backgroundPosition = 'center';
+    bar.dataset.variant = url;
+    return true;
+  }
+
   function setBanner(variant) {
     const url = assetURI(variant || 'banner.svg');
     // YouTube has changed this element several times. Try every known shape.
@@ -690,6 +722,10 @@
       '#banner img',
       '#banner'
     ];
+    // A brand-new channel has no banner element at all - build one.
+    if (!candidates.some(sel => document.querySelector(sel))) {
+      return createBanner(url);
+    }
     for (const sel of candidates) {
       const el = document.querySelector(sel);
       if (!el) continue;
@@ -861,6 +897,11 @@
       '<div class="jsa-note"><b>Three steps to a decorated channel.</b> ' +
       'Create the channel on YouTube, pick a handle, then let this script dress it. ' +
       'Everything below is detected automatically while you browse your own channel.</div>' +
+
+      '<div class="jsa-note" style="border-left-color:' + BRAND.gold + '"><b>Also do this in YouTube Studio:</b> ' +
+      'Set your channel display name to <b>Justice Society of Activism</b>, upload the banner and avatar ' +
+      'from the Brand assets section below, and add a description and links. Those live in your account ' +
+      'and are what every visitor sees permanently — the script only decorates the page in your browser.</div>' +
 
       '<div class="jsa-stats">' +
       '<div class="jsa-stat"><b>' + (cfg.channelId ? 'FOUND' : '—') + '</b><span>Channel ID</span></div>' +
