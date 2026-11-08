@@ -2,26 +2,26 @@
   "primary": {
     "variant": "primary",
     "typeScale": 1,
-    "tagScale": 0.973
+    "tagScale": 1
   },
   "new-episode": {
     "variant": "new-episode",
-    "typeScale": 0.982,
-    "tagScale": 0.973
+    "typeScale": 0.942,
+    "tagScale": 1
   },
   "season-two": {
     "variant": "season-two",
-    "typeScale": 1,
-    "tagScale": 0.674
+    "typeScale": 0.958,
+    "tagScale": 0.712
   },
   "membership": {
     "variant": "membership",
-    "typeScale": 0.966,
-    "tagScale": 0.751
+    "typeScale": 0.921,
+    "tagScale": 0.774
   },
   "paper-trail": {
     "variant": "paper-trail",
     "typeScale": 1,
-    "tagScale": 0.7
+    "tagScale": 0.717
   }
 }

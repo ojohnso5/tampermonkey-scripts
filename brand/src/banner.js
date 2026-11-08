@@ -13,6 +13,8 @@
 const { C, rgba } = require('./palette');
 const { faces } = require('./fonts');
 const { crest } = require('./crest');
+const geo = require('./geo');
+const { AREA } = require('./safearea-spec');
 
 const VARIANTS = {
   primary: {
@@ -87,22 +89,41 @@ function banner(o) {
   </filter>`);
 
   // ---- background ----------------------------------------------------
+  // ---- LAYOUT ---------------------------------------------------------
+  // One definition, used by both the rendered banner and the layout probe,
+  // so the two can never drift apart.
+  const L = {
+    crestSize: 404,
+    crestX: AREA.x0,
+    crestY: Math.round((AREA.y0 + AREA.y1) / 2 - 202),
+    tx: 1300,
+    line1Y: 668,
+    line2Y: 796,
+    typeSize: Math.round(124 * o.typeScale),
+    typeLS: Math.round(4 * o.typeScale),
+    tagSize: Math.round(27 * o.tagScale),
+    tagLS: Math.round(9 * o.tagScale),
+    ruleY: 874,
+    ruleW: 620,
+    ruleH: 3,
+    energyY: 832,
+    tagY: 918
+  };
+
   if (o.probe) {
     // Layout-probe mode: decorative layers are omitted so the rendered
     // bounding box of the meaningful elements is exact.
-    const crestSize2 = 560, crestX2 = 507, crestY2 = 440;
-    const tx2 = 1160, l1 = 690, l2 = 820;
     const probeLayers = [];
-    probeLayers.push(`<g transform="translate(${crestX2} ${crestY2}) scale(${crestSize2/1024})">
+    probeLayers.push(`<g transform="translate(${L.crestX} ${L.crestY}) scale(${L.crestSize/1024})">
       ${crest({ size: 1024, idPrefix: id + 'PC', transparent: true, withParticles: false, inner: true })}
     </g>`);
-    probeLayers.push(`<text x="${tx2}" y="${l1}" font-family="'Bebas Neue', 'Arial Narrow', Impact, sans-serif"
-      font-size="${Math.round(140 * o.typeScale)}" letter-spacing="5" fill="#FFFFFF">${V.line1}</text>`);
-    probeLayers.push(`<text x="${tx2}" y="${l2}" font-family="'Bebas Neue', 'Arial Narrow', Impact, sans-serif"
-      font-size="${Math.round(140 * o.typeScale)}" letter-spacing="5" fill="#FFFFFF">${V.line2}</text>`);
-    probeLayers.push(`<rect x="${tx2}" y="${l2+36}" width="830" height="60" fill="#FFFFFF" opacity="0.0"/>`);
-    probeLayers.push(`<text x="${tx2}" y="${l2+144}" font-family="'Montserrat', Arial, sans-serif" font-weight="700"
-      font-size="${Math.round(33 * o.tagScale)}" letter-spacing="${Math.round(11 * o.tagScale)}" fill="#FFFFFF">${V.tag}</text>`);
+    probeLayers.push(`<text x="${L.tx}" y="${L.line1Y}" font-family="'Bebas Neue', 'Arial Narrow', Impact, sans-serif"
+      font-size="${L.typeSize}" letter-spacing="${L.typeLS}" fill="#FFFFFF">${V.line1}</text>`);
+    probeLayers.push(`<text x="${L.tx}" y="${L.line2Y}" font-family="'Bebas Neue', 'Arial Narrow', Impact, sans-serif"
+      font-size="${L.typeSize}" letter-spacing="${L.typeLS}" fill="#FFFFFF">${V.line2}</text>`);
+    probeLayers.push(`<rect x="${L.tx}" y="${L.ruleY}" width="${L.ruleW}" height="${L.ruleH}" fill="#FFFFFF"/>`);
+    probeLayers.push(`<text x="${L.tx}" y="${L.tagY}" font-family="'Montserrat', Arial, sans-serif" font-weight="700"
+      font-size="${L.tagSize}" letter-spacing="${L.tagLS}" fill="#FFFFFF">${V.tag}</text>`);
     return `<svg xmlns="http://www.w3.org/2000/svg" width="${W}" height="${H}" viewBox="0 0 ${W} ${H}">
 ${faces()}
 ${defs.join('')}
@@ -141,6 +162,28 @@ ${probeLayers.join('\n')}
   }
   layers.push(`<g filter="url(#${id}Blur)">${currents.join('')}</g>`);
 
+  // ---- global network lighting ----------------------------------------
+  // A faint wireframe globe behind the composition, with a lattice of
+  // connected nodes. It reads as global reach without adding clutter.
+  const nR = 560, ncx = 1300, ncy = 720;
+  const lattice = [];
+  for (let i = 0; i < 26; i++) {
+    const a = (i / 26) * Math.PI * 2;
+    const r1 = nR * (0.30 + (i % 5) * 0.12);
+    const r2 = nR * (0.42 + (i % 4) * 0.14);
+    const x1 = ncx + Math.cos(a) * r1, y1 = ncy + Math.sin(a) * r1 * 0.78;
+    const x2 = ncx + Math.cos(a + 0.5) * r2, y2 = ncy + Math.sin(a + 0.5) * r2 * 0.78;
+    lattice.push(`<path d="M ${x1.toFixed(0)} ${y1.toFixed(0)} L ${x2.toFixed(0)} ${y2.toFixed(0)}"
+      stroke="${C.blue}" stroke-width="1.6" opacity=".22" fill="none"/>`);
+    lattice.push(`<circle cx="${x1.toFixed(0)}" cy="${y1.toFixed(0)}" r="${(2.2 + (i % 3) * 1.4).toFixed(1)}"
+      fill="${C.blue}" opacity=".38"/>`);
+  }
+  const globeWire = geo.networkArcs(nR, ncx, ncy).map(d =>
+    `<path d="${d}" stroke="${C.blue}" stroke-width="1.4" opacity=".16" fill="none"/>`).join('');
+  layers.push(`<g filter="url(#${id}Blur)" opacity=".85">${lattice.join('')}</g>`);
+  layers.push(`<g>${globeWire}</g>`);
+  layers.push(`<circle cx="${ncx}" cy="${ncy}" r="${nR}" fill="none" stroke="${C.blue}" stroke-width="2" opacity=".14"/>`);
+
   // ---- gold particles -------------------------------------------------
   const parts = [];
   for (let i = 0; i < 220; i++) {
@@ -152,35 +195,37 @@ ${probeLayers.join('\n')}
   layers.push(`<g>${parts.join('')}</g>`);
 
   // ---- LEFT: large crest --------------------------------------------
-  // Sized and placed to sit inside YouTube's safe area (x 507-2053, y 423-1017)
-  const crestSize = 560;
-  const crestX = 507, crestY = 440;
+  // The crest sits in the left third of the safe band, sized so the whole
+  // ring survives every crop.
+  const crestSize = L.crestSize;
+  const crestX = L.crestX;
+  const crestY = L.crestY;
   layers.push(`<g transform="translate(${crestX} ${crestY}) scale(${crestSize/1024})">
     ${crest({ size: 1024, idPrefix: id + 'C', transparent: true, withParticles: false, inner: true })}
   </g>`);
 
   // ---- RIGHT: wordmark ------------------------------------------------
-  const tx = 1160;
-  const line1Y = 690, line2Y = 820;
+  const tx = L.tx;
+  const line1Y = L.line1Y, line2Y = L.line2Y;
   layers.push(`<g filter="url(#${id}TextGlow)">
     <text x="${tx}" y="${line1Y}" font-family="'Bebas Neue', 'Arial Narrow', Impact, sans-serif"
-      font-size="${Math.round(140 * o.typeScale)}" letter-spacing="5" fill="url(#${id}GoldType)">${V.line1}</text>
+      font-size="${L.typeSize}" letter-spacing="${L.typeLS}" fill="url(#${id}GoldType)">${V.line1}</text>
     <text x="${tx}" y="${line2Y}" font-family="'Bebas Neue', 'Arial Narrow', Impact, sans-serif"
-      font-size="${Math.round(140 * o.typeScale)}" letter-spacing="5" fill="url(#${id}GoldType)">${V.line2}</text>
+      font-size="${L.typeSize}" letter-spacing="${L.typeLS}" fill="url(#${id}GoldType)">${V.line2}</text>
   </g>`);
 
   // blue energy flowing underneath the type
   layers.push(`<g filter="url(#${id}Blur2)">
-    <path d="M ${tx} ${line2Y + 42} C ${tx+280} ${line2Y+18}, ${tx+560} ${line2Y+66}, ${tx+830} ${line2Y+26}"
+    <path d="M ${tx} ${L.energyY} C ${tx+260} ${L.energyY-22}, ${tx+520} ${L.energyY+22}, ${tx+780} ${L.energyY-14}"
       fill="none" stroke="url(#${id}Energy)" stroke-width="9" stroke-linecap="round"/>
   </g>`);
-  layers.push(`<path d="M ${tx} ${line2Y + 42} C ${tx+280} ${line2Y+18}, ${tx+560} ${line2Y+66}, ${tx+830} ${line2Y+26}"
+  layers.push(`<path d="M ${tx} ${L.energyY} C ${tx+260} ${L.energyY-22}, ${tx+520} ${L.energyY+22}, ${tx+780} ${L.energyY-14}"
     fill="none" stroke="url(#${id}Energy)" stroke-width="3.5" stroke-linecap="round"/>`);
 
   // rule + descriptor
-  layers.push(`<rect x="${tx}" y="${line2Y + 92}" width="660" height="3" fill="${C.gold}" opacity=".55"/>`);
-  layers.push(`<text x="${tx}" y="${line2Y + 144}" font-family="'Montserrat', Arial, sans-serif" font-weight="700"
-    font-size="${Math.round(33 * o.tagScale)}" letter-spacing="${Math.round(11 * o.tagScale)}" fill="#D6D6DE" opacity=".92">${V.tag}</text>`);
+  layers.push(`<rect x="${tx}" y="${L.ruleY}" width="${L.ruleW}" height="${L.ruleH}" fill="${C.gold}" opacity=".55"/>`);
+  layers.push(`<text x="${tx}" y="${L.tagY}" font-family="'Montserrat', Arial, sans-serif" font-weight="700"
+    font-size="${L.tagSize}" letter-spacing="${L.tagLS}" fill="#D6D6DE" opacity=".92">${V.tag}</text>`);
 
   // ---- bottom accent bars --------------------------------------------
   layers.push(`<rect x="0" y="0" width="${W}" height="12" fill="${C.red}"/>`);
@@ -204,9 +249,11 @@ ${layers.join('\n')}
 function bannerBoxes(o) {
   o = Object.assign({ width: 2560, height: 1440, variant: 'primary' }, o);
   const W = o.width, H = o.height;
-  const crestSize = 560, crestX = 507, crestY = 440;
-  const tx = 1160, line1Y = 690, line2Y = 820;
-  const fontSize = 140;
+  const crestSize = L.crestSize;
+  const crestX = L.crestX;
+  const crestY = L.crestY;
+  const tx = 1300, line1Y = 668, line2Y = 796;
+  const fontSize = 124;
   // Bebas Neue is a condensed face; these are measured from the rendered
   // output and updated when the typeface or size changes.
   const w1 = 14 * fontSize * 0.38, w2 = 10 * fontSize * 0.38;
@@ -214,8 +261,8 @@ function bannerBoxes(o) {
     { name: 'crest', x0: crestX, y0: crestY, x1: crestX + crestSize, y1: crestY + crestSize },
     { name: 'title line 1', x0: tx, y0: line1Y - fontSize, x1: tx + w1, y1: line1Y + 12 },
     { name: 'title line 2', x0: tx, y0: line2Y - fontSize, x1: tx + w2, y1: line2Y + 12 },
-    { name: 'energy rule', x0: tx, y0: line2Y + 36, x1: tx + 830, y1: line2Y + 96 },
-    { name: 'descriptor', x0: tx, y0: line2Y + 110, x1: tx + 700, y1: line2Y + 158 }
+    { name: 'energy rule', x0: tx, y0: line2Y + 30, x1: tx + 780, y1: line2Y + 86 },
+    { name: 'descriptor', x0: tx, y0: line2Y + 98, x1: tx + 700, y1: line2Y + 136 }
   ];
 }
 

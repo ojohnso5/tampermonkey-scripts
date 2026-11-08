@@ -13,10 +13,10 @@ const { measureText } = require('./render');
 
 const FITS_FILE = path.join(__dirname, '..', 'src', 'fits.json');
 
-const AREA = { x0: 507, x1: 2053, y0: 423, y1: 1017 };
-const TYPE_X = 1160;
-const MIN_TYPE = 78;      // never shrink the display type below this
-const MIN_TAG = 18;
+const { AREA } = require('./safearea-spec');
+const TYPE_X = 1300;
+const MIN_TYPE = 72;      // never shrink the display type below this
+const MIN_TAG = 13;
 
 async function fitVariant(variant) {
   let typeScale = 1, tagScale = 1;
@@ -33,7 +33,7 @@ async function fitVariant(variant) {
     texts.forEach(t => {
       const right = t.x + t.width;
       if (right > AREA.x1) {
-        if (t.fontSize > 60) typeOverflow = Math.max(typeOverflow, right - AREA.x1);
+        if (t.fontSize > 50) typeOverflow = Math.max(typeOverflow, right - AREA.x1);
         else tagOverflow = Math.max(tagOverflow, right - AREA.x1);
       }
     });
@@ -41,14 +41,14 @@ async function fitVariant(variant) {
     if (!typeOverflow && !tagOverflow) break;
 
     if (typeOverflow) {
-      const widest = Math.max(...texts.filter(t => t.fontSize > 60).map(t => t.x + t.width));
+      const widest = Math.max(...texts.filter(t => t.fontSize > 50).map(t => t.x + t.width));
       const avail = AREA.x1 - TYPE_X;
-      typeScale = Math.max(MIN_TYPE / 140, typeScale * (avail / (widest - TYPE_X)) * 0.995);
+      typeScale = Math.max(MIN_TYPE / 124, typeScale * (avail / (widest - TYPE_X)) * 0.995);
     }
     if (tagOverflow) {
-      const widest = Math.max(...texts.filter(t => t.fontSize <= 60).map(t => t.x + t.width));
+      const widest = Math.max(...texts.filter(t => t.fontSize <= 50).map(t => t.x + t.width));
       const avail = AREA.x1 - TYPE_X;
-      tagScale = Math.max(MIN_TAG / 33, tagScale * (avail / (widest - TYPE_X)) * 0.995);
+      tagScale = Math.max(MIN_TAG / 27, tagScale * (avail / (widest - TYPE_X)) * 0.995);
     }
   }
 

@@ -2,9 +2,10 @@
 /**
  * Proves the banner artwork sits inside YouTube's visible safe area.
  *
- * YouTube crops banners differently per device; the worst case keeps only
- * x 507-2053, y 423-1017 of a 2560x1440 image. Anything outside that region
- * can be cut off on phones, TVs or in the mobile app.
+ * YouTube crops banners differently per device; the region that survives
+ * every crop is the 1546 x 423 rectangle centred in the canvas
+ * (x 507-2053, y 509-932). Anything outside that band can be cut off on
+ * phones, TVs or in the mobile app.
  *
  * The check renders a "layout probe" version of the banner (decorative
  * layers removed) and measures the actual pixel bounding box of the crest,
@@ -19,7 +20,7 @@ const path = require('path');
 const { banner, VARIANTS } = require('./banner');
 const { loadFits } = require('./fit');
 
-const AREA = { x0: 507, x1: 2053, y0: 423, y1: 1017 };
+const { AREA } = require('./safearea-spec');
 
 async function measure(variant) {
   const fit = loadFits()[variant] || { typeScale: 1, tagScale: 1 };

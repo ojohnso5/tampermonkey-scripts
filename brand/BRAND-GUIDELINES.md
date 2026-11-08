@@ -141,12 +141,27 @@ identically anywhere with no font install.
 `out/banner.svg` plus four variants: `banner-new-episode`, `banner-season-two`,
 `banner-membership`, `banner-paper-trail`.
 
-Layout: large crest on the **left**, negative space in the **centre**,
-metallic-gold wordmark on the **right** with blue energy flowing beneath it.
+Layout, inside the safe band:
 
-> The wordmark and crest sit inside YouTube's safe area
-> (**x 507–2053, y 423–1017**) so nothing is cropped on TVs, desktops or
-> phones. Verify after any layout change with `node brand/src/safearea.js`.
+| Zone | Content |
+|---|---|
+| **Left** | The JSA crest, 404 px, vertically centred in the band |
+| **Centre** | Clean negative space — the energy currents and network lattice run through it, but no type |
+| **Right** | `JUSTICE SOCIETY OF ACTIVISM` in metallic-gold Bebas Neue, two lines, with the blue energy stream and gold rule beneath, and the descriptor below that |
+
+Background: Midnight Black base, deep-red atmospheric bloom, electric-blue
+energy currents, drifting gold particles, and a faint global-network lattice —
+a wireframe globe with connected nodes — sitting behind the composition.
+
+> **Safe area.** The region that survives every YouTube crop is the
+> **1546 × 423 rectangle centred in the canvas: x 507–2053, y 509–932.**
+> The wordmark and crest are placed to sit entirely inside it.
+>
+> This is enforced, not assumed. `node brand/src/safearea.js` renders a
+> layout probe of each banner and measures the real pixel bounding box of the
+> crest, the wordmark, the rule and the descriptor against that rectangle.
+> Type is auto-fitted by measuring live font metrics in a browser:
+> `node brand/src/fit.js`.
 
 ### Video watermark
 `out/watermark.svg` + `out/watermark-512.png` — transparent PNG.

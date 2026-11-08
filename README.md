@@ -51,11 +51,13 @@ rules and rationale: **[brand/BRAND-GUIDELINES.md](brand/BRAND-GUIDELINES.md)**.
 Justice Gold `#D4AF37` · Truth Blue `#00AEEF`
 
 > **Banner safe area.** YouTube crops banner art differently on every device.
-> The wordmark and crest sit inside the worst-case crop (x 507–2053,
-> y 423–1017). This is enforced by a test, not by hand:
-> `node brand/src/safearea.js` renders each banner and measures the actual
-> pixel bounding box of the crest and type. Type is auto-fitted to fit:
-> `node brand/src/fit.js`.
+> The region that survives every crop is the **1546 × 423 rectangle centred in
+> the canvas — x 507–2053, y 509–932.** The wordmark and crest sit entirely
+> inside it. This is enforced by a test, not by hand:
+> `node brand/src/safearea.js` renders a layout probe of each banner and
+> measures the real pixel bounding box of the crest, wordmark, rule and
+> descriptor against that rectangle. Type is auto-fitted from live font
+> metrics: `node brand/src/fit.js`.
 
 #### Rebuilding the brand
 
@@ -73,7 +75,8 @@ one hero, one emblem — so every asset stays consistent.
 | Module | Responsibility |
 |--------|----------------|
 | `palette.js` | The four brand tokens and derived tones |
-| `geo.js` | Orthographic globe projection with the Americas visible |
+| `geo.js` | Orthographic globe projection, the Americas visible, plus network arcs and nodes |
+| `safearea-spec.js` | The canonical YouTube banner safe area — one source of truth |
 | `hero.js` | The hero figure and its anchors |
 | `emblem.js` | The JSA chest monogram |
 | `crest.js` | Composes the crest: halo → ring → globe → hero → emblem |
