@@ -42,6 +42,7 @@ rules and rationale: **[brand/BRAND-GUIDELINES.md](brand/BRAND-GUIDELINES.md)**.
 | Banner — membership | 2560×1440 | [brand/out/banner-membership.svg](brand/out/banner-membership.svg) |
 | Banner — paper trail | 2560×1440 | [brand/out/banner-paper-trail.svg](brand/out/banner-paper-trail.svg) |
 | Video watermark (transparent) | 512² | [brand/out/watermark.svg](brand/out/watermark.svg) |
+| Watermark preview over footage | 960×1620 | [brand/out/watermark-preview.png](brand/out/watermark-preview.png) |
 | End screen | 1920×1080 | [brand/out/end-screen.svg](brand/out/end-screen.svg) |
 | Intro animation (4.6s, SMIL) | 1920×1080 | [brand/out/intro.svg](brand/out/intro.svg) |
 | Thumbnail system | 1280×720 | [brand/out/thumb-follow-money.svg](brand/out/thumb-follow-money.svg) |

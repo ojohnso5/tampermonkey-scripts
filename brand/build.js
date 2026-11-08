@@ -67,6 +67,8 @@ Object.keys(require('./src/banner').VARIANTS).forEach(v => {
 /* ---- 4. Video watermark ------------------------------------------ */
 add('watermark.svg', watermark({ size: 512 }),
   { file: 'watermark-512.png', width: 512, height: 512, transparent: true });
+add('watermark-preview.svg', require('./src/watermark').watermarkPreview({}),
+  { file: 'watermark-preview.png', width: 960, height: 1620, background: '#111111' });
 
 /* ---- 5. End screen ----------------------------------------------- */
 add('end-screen.svg', endScreen({ width: 1920, height: 1080 }),

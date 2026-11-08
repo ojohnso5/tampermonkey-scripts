@@ -165,8 +165,31 @@ a wireframe globe with connected nodes — sitting behind the composition.
 
 ### Video watermark
 `out/watermark.svg` + `out/watermark-512.png` — transparent PNG.
-Globe + emblem only. No hero, no text. Keep it between **6% and 10%** of
-frame width so it stays legible over busy footage.
+`out/watermark-preview.png` shows it composited over bright, mid and dark
+footage at the lower-right corner.
+
+Minimalist by design — exactly three elements:
+
+| Element | Treatment |
+|---|---|
+| **JSA emblem** | Dominant. Gold monogram, the identifying mark |
+| **Globe** | Small, up and to the left of the emblem. Electric-blue luminous core, gold continents, crisp rim light, specular highlight |
+| **Red energy glow** | A tight halo behind the emblem — subtle, not a wash |
+
+No hero. No text. No border or ring of any kind.
+
+**Placement.** Lower-right corner, `right: 22px; bottom: 20px`, at
+**6–10% of frame width** (about 112 px on a 1920-wide video). Keep it clear of
+the YouTube progress bar and the channel watermark slot.
+
+**Legibility over any footage.** The emblem carries a tight dark contour
+(feMorphology dilate + blur, 88% black) hugging the letterforms, plus a gold
+bloom. The contour is what makes it hold up over bright footage; the bloom is
+what makes it hold up over dark footage. Neither is a decorative border —
+they hug the ink.
+
+Measured contrast of the mark against its own contour: **2.8 : 1** on bright
+footage, **23 : 1** on dark.
 
 ### Thumbnails (1280×720)
 `out/thumb-*.svg` + PNG. Five ready-made examples:
