@@ -191,14 +191,60 @@ they hug the ink.
 Measured contrast of the mark against its own contour: **2.8 : 1** on bright
 footage, **23 : 1** on dark.
 
-### Thumbnails (1280×720)
-`out/thumb-*.svg` + PNG. Five ready-made examples:
-EXPOSED · WHO PROFITS? · THEY LIED · ACCOUNTABILITY NOW · FOLLOW THE MONEY.
+### Thumbnail system (1280×720)
 
-System rules: red 12 px border · gold corner accents · blue energy accents ·
-JSA crest bottom-left with the wordmark · headline left-aligned at max 4
-words, split across two lines automatically · the right third is deliberately
-left clear for the presenter or footage still.
+`out/thumb-template.svg` — the blank template, with the subject dropzone
+labelled and the headline reserved.
+
+`out/thumb-<headline>.svg` — one template per reserved headline:
+**EXPOSED · WHO PROFITS · FOLLOW THE MONEY · THEY LIED · WATCH THIS ·
+ACCOUNTABILITY NOW**
+
+`out/thumb-contact-sheet.png` — all six stacked with their headlines labelled.
+
+#### Layout
+
+| Zone | Position | Purpose |
+|---|---|---|
+| Subject image area | right, x 700–1252 | The dropzone. A portrait subject reading left into the headline |
+| Title area | left, x 58–700 | Kicker, headline, accent rule, optional sub-line |
+| Logo | lower left | JSA crest + wordmark |
+| Frame | 14 px inset | Red border with gold corner accents |
+| Energy | between title and subject | Electric-blue arc separating the two zones |
+
+The subject area accepts a real image (`subject:` option, data URI or path).
+With no image it renders as a self-documenting placeholder: hatched fill, gold
+corner brackets, a rim-lit figure silhouette and a `SUBJECT IMAGE` label.
+
+#### Typography
+
+Headlines are set in Bebas Neue, all caps, on a dark scrim so they hold
+against any footage. The headline is **auto-fitted to the title column** using
+the real font metrics in `src/font-metrics.js`, so a 14-character word like
+`ACCOUNTABILITY` can never spill over the subject.
+
+| Headline | Fitted size | Lines |
+|---|---|---|
+| EXPOSED | 150 px | 1 |
+| WHO PROFITS | 140 px | 2 |
+| FOLLOW THE MONEY | 116 px | 2 |
+| THEY LIED | 140 px | 2 |
+| WATCH THIS | 140 px | 2 |
+| ACCOUNTABILITY NOW | 82 px | 2 |
+
+Breaking rules: one word sets on one huge line; two words stack one per
+line; three or more split into two balanced lines.
+
+#### CTR notes
+
+- Red frame + gold corners give the thumbnail a hard edge against YouTube's
+  white page background — it reads as a broadcast graphic, not a video still.
+- The kicker is Montserrat 800 in gold or red, tracked out, with a colour
+  block — it signals category before the viewer reads the headline.
+- The blue energy arc separates the words from the face, so the subject never
+  fights the type.
+- The bottom-right third is kept clear of text: on YouTube that is where the
+  runtime badge lands, and covering it costs clicks.
 
 ### End screen (1920×1080)
 `out/end-screen.svg` + PNG. Crest centre, two video placeholders, subscribe

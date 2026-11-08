@@ -1,6 +1,6 @@
 {
   "brand": "Justice Society of Activism",
-  "generated": "2026-11-08T21:08:07.201Z",
+  "generated": "2026-11-08T21:12:25.846Z",
   "palette": {
     "midnight": "#0B0B0F",
     "red": "#E11937",
@@ -74,19 +74,34 @@
       "size": "1280x720"
     },
     {
+      "svg": "thumb-follow-the-money.svg",
+      "png": "thumb-follow-the-money-1280x720.png",
+      "size": "1280x720"
+    },
+    {
       "svg": "thumb-they-lied.svg",
       "png": "thumb-they-lied-1280x720.png",
       "size": "1280x720"
     },
     {
-      "svg": "thumb-accountability.svg",
-      "png": "thumb-accountability-1280x720.png",
+      "svg": "thumb-watch-this.svg",
+      "png": "thumb-watch-this-1280x720.png",
       "size": "1280x720"
     },
     {
-      "svg": "thumb-follow-money.svg",
-      "png": "thumb-follow-money-1280x720.png",
+      "svg": "thumb-accountability-now.svg",
+      "png": "thumb-accountability-now-1280x720.png",
       "size": "1280x720"
+    },
+    {
+      "svg": "thumb-template.svg",
+      "png": "thumb-template-1280x720.png",
+      "size": "1280x720"
+    },
+    {
+      "svg": "thumb-contact-sheet.svg",
+      "png": "thumb-contact-sheet.png",
+      "size": "1300x4676"
     },
     {
       "svg": "icon-192.svg",

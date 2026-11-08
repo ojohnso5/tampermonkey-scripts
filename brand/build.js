@@ -78,17 +78,32 @@ add('end-screen.svg', endScreen({ width: 1920, height: 1080 }),
 add('intro.svg', intro({ width: 1920, height: 1080 }));
 
 /* ---- 7. Thumbnail system ----------------------------------------- */
-const THUMBS = [
-  { file: 'thumb-exposed', headline: 'EXPOSED', kicker: 'JSA INVESTIGATION', variant: 'alert' },
-  { file: 'thumb-who-profits', headline: 'WHO PROFITS?', kicker: 'FOLLOW THE PAPER TRAIL', variant: 'default' },
-  { file: 'thumb-they-lied', headline: 'THEY LIED', kicker: 'DOCUMENTED', variant: 'alert' },
-  { file: 'thumb-accountability', headline: 'ACCOUNTABILITY NOW', kicker: 'THE WEEK IN REVIEW', variant: 'investigation' },
-  { file: 'thumb-follow-money', headline: 'FOLLOW THE MONEY', kicker: 'JSA INVESTIGATION', variant: 'default' }
-];
-THUMBS.forEach(t => {
-  add(t.file + '.svg', thumbnail({ headline: t.headline, kicker: t.kicker, variant: t.variant }),
-    { file: t.file + '-1280x720.png', width: 1280, height: 720 });
+// The six headlines the system is built around, one template each.
+const { HEADLINES } = require('./src/thumbnail');
+const THUMB_VARIANTS = {
+  'EXPOSED':            { kicker: 'JSA INVESTIGATION',   variant: 'alert' },
+  'WHO PROFITS':        { kicker: 'FOLLOW THE MONEY',    variant: 'default' },
+  'FOLLOW THE MONEY':   { kicker: 'JSA INVESTIGATION',   variant: 'investigation' },
+  'THEY LIED':          { kicker: 'DOCUMENTED',         variant: 'breaking' },
+  'WATCH THIS':         { kicker: 'JUST RELEASED',      variant: 'default' },
+  'ACCOUNTABILITY NOW': { kicker: 'THE WEEK IN REVIEW', variant: 'breaking' }
+};
+HEADLINES.forEach(h => {
+  const v = THUMB_VARIANTS[h] || { kicker: 'JSA INVESTIGATION', variant: 'default' };
+  const slug = h.toLowerCase().replace(/[^a-z0-9]+/g, '-').replace(/^-|-$/g, '');
+  add('thumb-' + slug + '.svg',
+    thumbnail({ headline: h, kicker: v.kicker, variant: v.variant }),
+    { file: 'thumb-' + slug + '-1280x720.png', width: 1280, height: 720 });
 });
+
+// Blank template: subject dropzone and label visible, headline reserved.
+add('thumb-template.svg',
+  thumbnail({ headline: 'YOUR HEADLINE', kicker: 'JSA INVESTIGATION', variant: 'default' }),
+  { file: 'thumb-template-1280x720.png', width: 1280, height: 720 });
+
+// Contact sheet of the whole set.
+add('thumb-contact-sheet.svg', require('./src/thumbnail-sheet').contactSheet(),
+  { file: 'thumb-contact-sheet.png', width: 1300, height: 4676, background: '#0B0B0F' });
 
 /* ---- 7b. Public copies used by the channel page ------------------ */
 fs.mkdirSync(path.join(__dirname, 'public'), { recursive: true });

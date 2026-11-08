@@ -45,7 +45,14 @@ rules and rationale: **[brand/BRAND-GUIDELINES.md](brand/BRAND-GUIDELINES.md)**.
 | Watermark preview over footage | 960×1620 | [brand/out/watermark-preview.png](brand/out/watermark-preview.png) |
 | End screen | 1920×1080 | [brand/out/end-screen.svg](brand/out/end-screen.svg) |
 | Intro animation (4.6s, SMIL) | 1920×1080 | [brand/out/intro.svg](brand/out/intro.svg) |
-| Thumbnail system | 1280×720 | [brand/out/thumb-follow-money.svg](brand/out/thumb-follow-money.svg) |
+| Thumbnail template (blank) | 1280×720 | [brand/out/thumb-template.svg](brand/out/thumb-template.svg) |
+| Thumbnail — EXPOSED | 1280×720 | [brand/out/thumb-exposed.svg](brand/out/thumb-exposed.svg) |
+| Thumbnail — WHO PROFITS | 1280×720 | [brand/out/thumb-who-profits.svg](brand/out/thumb-who-profits.svg) |
+| Thumbnail — FOLLOW THE MONEY | 1280×720 | [brand/out/thumb-follow-the-money.svg](brand/out/thumb-follow-the-money.svg) |
+| Thumbnail — THEY LIED | 1280×720 | [brand/out/thumb-they-lied.svg](brand/out/thumb-they-lied.svg) |
+| Thumbnail — WATCH THIS | 1280×720 | [brand/out/thumb-watch-this.svg](brand/out/thumb-watch-this.svg) |
+| Thumbnail — ACCOUNTABILITY NOW | 1280×720 | [brand/out/thumb-accountability-now.svg](brand/out/thumb-accountability-now.svg) |
+| Thumbnail contact sheet | 1300×4666 | [brand/out/thumb-contact-sheet.png](brand/out/thumb-contact-sheet.png) |
 | App icon | 192 / 512 | [brand/out/icon-512.svg](brand/out/icon-512.svg) |
 
 **Colour tokens** — Midnight Black `#0B0B0F` · Activism Red `#E11937` ·
