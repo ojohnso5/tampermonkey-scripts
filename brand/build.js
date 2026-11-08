@@ -76,6 +76,7 @@ add('end-screen.svg', endScreen({ width: 1920, height: 1080 }),
 
 /* ---- 6. Intro animation ------------------------------------------ */
 add('intro.svg', intro({ width: 1920, height: 1080 }));
+add('intro-preview.html', require('./src/intro-preview').introPreview({}));
 
 /* ---- 7. Thumbnail system ----------------------------------------- */
 // The six headlines the system is built around, one template each.

@@ -250,23 +250,44 @@ line; three or more split into two balanced lines.
 `out/end-screen.svg` + PNG. Crest centre, two video placeholders, subscribe
 bar, handle. Dark and restrained — one accent colour only.
 
-### Intro animation
-`out/intro.svg` — a 4.6 s cinematic sequence in pure SMIL. Open it in any
-browser; no JavaScript required.
+### Intro animation — 5.0 s, nine scenes
 
-| Time | Beat |
+| File | Use |
 |---|---|
-| 0.0 s | Black |
-| 0.3 s | Blue globe energy forms |
-| 0.9 s | Global network lights activate |
-| 1.5 s | Blue energy rises into the JSA emblem |
-| 2.1 s | Hero emerges |
-| 2.8 s | Gold ring forms |
-| 3.4 s | Red energy halo ignites |
-| 4.0 s | Final logo lockup |
+| `out/intro.svg` | Master. Pure SMIL — opens and plays in any browser, no JavaScript |
+| `out/intro-preview.html` | Full-screen preview with replay/pause and the scene list |
+| `out/intro-1920x1080.mp4` | H.264 MP4, 25 fps — ready to upload |
+| `out/frames/` | PNG frame sequence for re-timing or re-cutting (generated, not tracked in git) |
 
-To export as frames, render the SVG in a browser and capture at 60 fps, then
-assemble in any editor.
+| Scene | Time | Beat |
+|---|---|---|
+| 1 | 0.00–0.45 s | Dark screen, drifting dust |
+| 2 | 0.45–1.15 s | A small electric-blue globe forms |
+| 3 | 1.15–1.80 s | Global network connections illuminate across the globe |
+| 4 | 1.80–2.35 s | Blue energy rises upward from the globe |
+| 5 | 2.35–2.95 s | A metallic JSA emblem forms out of the energy |
+| 6 | 2.95–3.55 s | A superhero flies through frame, with motion trails |
+| 7 | 3.55–4.05 s | A metallic gold ring forms around the hero |
+| 8 | 4.05–4.50 s | The red energy halo ignites |
+| 9 | 4.50–5.00 s | The final hero-and-globe crest locks up |
+
+**The geometry comes from `src/crest-layout.js`** — the same module the logo
+uses — so the animation lands on exactly the finished composition rather than
+an approximation of it.
+
+**The emblem does double duty.** It forms large out of the rising energy in
+scene 5, then shrinks onto the hero's chest as the hero lands in scene 6, and
+holds there for the lockup — so the beat the viewer watches is the same mark
+that ends up on the crest.
+
+To rebuild the frames and the MP4:
+
+```bash
+node brand/src/intro-frames.js 25 1.0     # 125 PNG frames at 1920x1080
+ffmpeg -y -framerate 25 -i brand/out/frames/frame-%04d.png \
+  -c:v libx264 -pix_fmt yuv420p -crf 16 -preset slow \
+  -movflags +faststart brand/out/intro-1920x1080.mp4
+```
 
 ---
 

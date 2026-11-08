@@ -12,6 +12,7 @@
 const { C, rgba } = require('./palette');
 const geo = require('./geo');
 const { hero, heroDefs, ANCHORS } = require('./hero');
+const { layout } = require('./crest-layout');
 const { emblem, emblemDefs } = require('./emblem');
 
 function crest(o) {
@@ -23,6 +24,7 @@ function crest(o) {
   const S = o.size;
   const cx = S / 2, cy = S / 2;
   const id = o.idPrefix;
+  const LAY = layout(S, ANCHORS.chest);
   const defs = [];
   const layers = [];
 
@@ -110,8 +112,8 @@ function crest(o) {
 
   // ================= GLOBE =================
   if (o.withGlobe) {
-    const R = S * 0.230;
-    const gx = cx, gy = cy + S * 0.185;
+    const R = LAY.globe.r;
+    const gx = LAY.globe.x, gy = LAY.globe.y;
     const g = [];
 
     // Blue core
@@ -171,10 +173,10 @@ function crest(o) {
   // ================= HERO =================
   // The hero is placed first so the emblem and energy stream can be derived
   // from its actual transform rather than hard-coded coordinates.
-  const hs = S / 1000 * 0.95;
-  const hx = cx - S * 0.455;
-  const hy = cy - S * 0.395;
-  const toCrest = p => ({ x: hx + p.x * hs, y: hy + p.y * hs });
+  const hs = LAY.hero.scale;
+  const hx = LAY.hero.tx;
+  const hy = LAY.hero.ty;
+  const toCrest = LAY.hero.toCrest;
 
   if (o.withHero) {
     layers.push(`<g filter="url(#${id}HeroHalo)">` + hero({
@@ -189,7 +191,7 @@ function crest(o) {
   // ================= ENERGY STREAM =================
   // Blue energy rising from the globe core into the chest emblem.
   if (o.withHero && o.withGlobe) {
-    const gx = cx, gy = cy + S * 0.185;
+    const gx = LAY.globe.x, gy = LAY.globe.y;
     const sx = gx, sy = gy;
     const ex = chest.x, ey = chest.y;
     layers.push(`<g id="${id}Stream" filter="url(#${id}BlueGlow)" opacity=".95">
@@ -202,7 +204,7 @@ function crest(o) {
 
   // ================= CHEST EMBLEM =================
   if (o.withHero) {
-    const es = S * 0.088;
+    const es = LAY.emblem.size;
     layers.push(`<g transform="translate(${chest.x - es/2} ${chest.y - es/2}) scale(${es/200})" id="${id}Emblem"
       filter="url(#${id}GoldGlow)">
       ${emblem({ idPrefix: id + 'E', gold: C.gold, blue: C.blue })}
@@ -210,7 +212,7 @@ function crest(o) {
   }
 
   // ================= RINGS =================
-  const rOuter = S * 0.468, rInner = S * 0.432;
+  const rOuter = LAY.ring.outer, rInner = LAY.ring.inner;
   if (!o.flatRing) {
     // Brushed-metal grain on the gold ring
     layers.push(`<circle cx="${cx}" cy="${cy}" r="${rOuter}" fill="none" stroke="url(#${id}RingGold)" stroke-width="${S*0.036}"/>`);

@@ -1,0 +1,3 @@
+# The PNG frame sequence is a generated intermediate for the MP4.
+# Rebuild it with: node brand/src/intro-frames.js 25 1.0
+frames/

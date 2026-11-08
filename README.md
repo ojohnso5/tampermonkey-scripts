@@ -44,7 +44,9 @@ rules and rationale: **[brand/BRAND-GUIDELINES.md](brand/BRAND-GUIDELINES.md)**.
 | Video watermark (transparent) | 512² | [brand/out/watermark.svg](brand/out/watermark.svg) |
 | Watermark preview over footage | 960×1620 | [brand/out/watermark-preview.png](brand/out/watermark-preview.png) |
 | End screen | 1920×1080 | [brand/out/end-screen.svg](brand/out/end-screen.svg) |
-| Intro animation (4.6s, SMIL) | 1920×1080 | [brand/out/intro.svg](brand/out/intro.svg) |
+| Intro animation — 5s, 9 scenes (SMIL) | 1920×1080 | [brand/out/intro.svg](brand/out/intro.svg) |
+| Intro animation — preview page | — | [brand/out/intro-preview.html](brand/out/intro-preview.html) |
+| Intro animation — MP4 (25 fps) | 1920×1080 | [brand/out/intro-1920x1080.mp4](brand/out/intro-1920x1080.mp4) |
 | Thumbnail template (blank) | 1280×720 | [brand/out/thumb-template.svg](brand/out/thumb-template.svg) |
 | Thumbnail — EXPOSED | 1280×720 | [brand/out/thumb-exposed.svg](brand/out/thumb-exposed.svg) |
 | Thumbnail — WHO PROFITS | 1280×720 | [brand/out/thumb-who-profits.svg](brand/out/thumb-who-profits.svg) |
