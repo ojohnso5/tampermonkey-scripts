@@ -132,7 +132,14 @@ The script then, on your channel page:
 > The script also targets YouTube's current DOM (`yt-image-banner-view-model`)
 > with fallbacks for the older `ytd-c4-banner-and-avatar-renderer` structure.
 
-### 🚀 Setup Wizard
+### 📦 Standalone export
+
+`jsa-repo/` is a self-contained copy of everything Justice-Society-related,
+ready to be pushed to its own repository (see the conversation notes or
+`jsa-repo/README.md`). It includes `site/` — the S3-ready static website —
+and `deploy/` for Amazon S3 hosting.
+
+## 🚀 Setup Wizard
 
 Automate the YouTube Studio upload process:
 

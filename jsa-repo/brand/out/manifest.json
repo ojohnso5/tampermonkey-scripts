@@ -1,0 +1,137 @@
+{
+  "brand": "Justice Society of Activism",
+  "generated": "2026-11-08T22:15:17.159Z",
+  "palette": {
+    "midnight": "#0B0B0F",
+    "red": "#E11937",
+    "gold": "#D4AF37",
+    "blue": "#00AEEF"
+  },
+  "assets": [
+    {
+      "svg": "logo-crest.svg",
+      "png": "logo-crest-1024.png",
+      "size": "1024x1024"
+    },
+    {
+      "svg": "logo-crest-solid.svg",
+      "png": "logo-crest-solid-1024.png",
+      "size": "1024x1024"
+    },
+    {
+      "svg": "logo-crest-dark.svg",
+      "png": "logo-crest-dark-1024.png",
+      "size": "1024x1024"
+    },
+    {
+      "svg": "banner.svg",
+      "png": "banner-2560x1440.png",
+      "size": "2560x1440"
+    },
+    {
+      "svg": "banner-new-episode.svg",
+      "png": "banner-new-episode-2560x1440.png",
+      "size": "2560x1440"
+    },
+    {
+      "svg": "banner-season-two.svg",
+      "png": "banner-season-two-2560x1440.png",
+      "size": "2560x1440"
+    },
+    {
+      "svg": "banner-membership.svg",
+      "png": "banner-membership-2560x1440.png",
+      "size": "2560x1440"
+    },
+    {
+      "svg": "banner-paper-trail.svg",
+      "png": "banner-paper-trail-2560x1440.png",
+      "size": "2560x1440"
+    },
+    {
+      "svg": "watermark.svg",
+      "png": "watermark-512.png",
+      "size": "512x512"
+    },
+    {
+      "svg": "watermark-preview.svg",
+      "png": "watermark-preview.png",
+      "size": "960x1620"
+    },
+    {
+      "svg": "channel-watermark-150.svg",
+      "png": "channel-watermark-150.png",
+      "size": "150x150"
+    },
+    {
+      "svg": "channel-watermark-300.svg",
+      "png": "channel-watermark-300.png",
+      "size": "300x300"
+    },
+    {
+      "svg": "lower-third-episode.svg",
+      "png": "lower-third-episode-1920x240.png",
+      "size": "1920x240"
+    },
+    {
+      "svg": "lower-third-live.svg",
+      "png": "lower-third-live-1920x240.png",
+      "size": "1920x240"
+    },
+    {
+      "svg": "end-screen.svg",
+      "png": "end-screen-1920x1080.png",
+      "size": "1920x1080"
+    },
+    {
+      "svg": "thumb-exposed.svg",
+      "png": "thumb-exposed-1280x720.png",
+      "size": "1280x720"
+    },
+    {
+      "svg": "thumb-who-profits.svg",
+      "png": "thumb-who-profits-1280x720.png",
+      "size": "1280x720"
+    },
+    {
+      "svg": "thumb-follow-the-money.svg",
+      "png": "thumb-follow-the-money-1280x720.png",
+      "size": "1280x720"
+    },
+    {
+      "svg": "thumb-they-lied.svg",
+      "png": "thumb-they-lied-1280x720.png",
+      "size": "1280x720"
+    },
+    {
+      "svg": "thumb-watch-this.svg",
+      "png": "thumb-watch-this-1280x720.png",
+      "size": "1280x720"
+    },
+    {
+      "svg": "thumb-accountability-now.svg",
+      "png": "thumb-accountability-now-1280x720.png",
+      "size": "1280x720"
+    },
+    {
+      "svg": "thumb-template.svg",
+      "png": "thumb-template-1280x720.png",
+      "size": "1280x720"
+    },
+    {
+      "svg": "thumb-contact-sheet.svg",
+      "png": "thumb-contact-sheet.png",
+      "size": "1300x4676"
+    },
+    {
+      "svg": "icon-192.svg",
+      "png": "icon-192.png",
+      "size": "192x192"
+    },
+    {
+      "svg": "icon-512.svg",
+      "png": "icon-512.png",
+      "size": "512x512"
+    }
+  ]
+}

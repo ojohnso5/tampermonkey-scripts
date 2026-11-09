@@ -1,0 +1,187 @@
+#!/usr/bin/env node
+/**
+ * JSA brand package builder.
+ *
+ * Regenerates every asset from the single source of truth in src/.
+ *
+ *   node brand/build.js            # SVGs only (no browser needed)
+ *   node brand/build.js --png      # SVGs + PNG renders (needs Chromium)
+ */
+const fs = require('fs');
+const path = require('path');
+
+const { crest } = require('./src/crest');
+const { banner } = require('./src/banner');
+const { watermark } = require('./src/watermark');
+const { thumbnail } = require('./src/thumbnail');
+const { endScreen } = require('./src/endscreen');
+const { intro } = require('./src/intro');
+
+const OUT = path.join(__dirname, 'out');
+const WANT_PNG = process.argv.includes('--png');
+
+function write(name, content) {
+  fs.mkdirSync(OUT, { recursive: true });
+  const p = path.join(OUT, name);
+  fs.writeFileSync(p, content);
+  console.log('  svg  ' + path.relative(process.cwd(), p));
+  return p;
+}
+
+/* ------------------------------------------------------------------ */
+const assets = [];
+const pngJobs = [];
+
+function add(name, svg, png) {
+  write(name, svg);
+  if (png) assets.push({ name, svg, png });
+}
+
+/* ---- 1. Primary crest: icon-only, transparent background -------- */
+add('logo-crest.svg', crest({ size: 1024, transparent: true }),
+  { file: 'logo-crest-1024.png', width: 1024, height: 1024, transparent: true });
+
+/* ---- 2. Crest variants ------------------------------------------- */
+add('logo-crest-solid.svg', crest({ size: 1024, idPrefix: 'S' }),
+  { file: 'logo-crest-solid-1024.png', width: 1024, height: 1024, background: '#0B0B0F' });
+
+add('logo-crest-dark.svg', crest({ size: 1024, idPrefix: 'D' }),
+  { file: 'logo-crest-dark-1024.png', width: 1024, height: 1024, background: '#0B0B0F' });
+
+/* ---- 3. Channel banner + variants -------------------------------- */
+// Each variant carries different copy, so the type is auto-fitted to
+// YouTube's safe area (see src/fit.js). Fits are cached in src/fits.json.
+const FITS = require('./src/fit').loadFits();
+Object.keys(require('./src/banner').VARIANTS).forEach(v => {
+  const isPrimary = v === 'primary';
+  const fit = FITS[v] || { typeScale: 1, tagScale: 1 };
+  add((isPrimary ? 'banner' : 'banner-' + v) + '.svg',
+    banner({
+      width: 2560, height: 1440,
+      idPrefix: 'B' + v.charAt(0).toUpperCase(),
+      variant: v, typeScale: fit.typeScale, tagScale: fit.tagScale
+    }),
+    { file: (isPrimary ? 'banner' : 'banner-' + v) + '-2560x1440.png', width: 2560, height: 1440 });
+});
+
+/* ---- 4. Video watermark ------------------------------------------ */
+add('watermark.svg', watermark({ size: 512 }),
+  { file: 'watermark-512.png', width: 512, height: 512, transparent: true });
+add('watermark-preview.svg', require('./src/watermark').watermarkPreview({}),
+  { file: 'watermark-preview.png', width: 960, height: 1620, background: '#111111' });
+
+/* ---- 4b. Channel watermark for YouTube's video-watermark slot -------- */
+// 150x150 PNG, transparent, under 1MB. YouTube makes this automatically
+// clickable — it links to the channel. Rendered at 300x300 too for high-DPI.
+const { channelWatermark } = require('./src/channel-watermark');
+add('channel-watermark-150.svg', channelWatermark({ size: 150 }),
+  { file: 'channel-watermark-150.png', width: 150, height: 150, transparent: true });
+add('channel-watermark-300.svg', channelWatermark({ size: 300 }),
+  { file: 'channel-watermark-300.png', width: 300, height: 300, transparent: true });
+
+/* ---- 4c. Lower-thirds ------------------------------------------------ */
+const { lowerThird } = require('./src/lower-third');
+add('lower-third-episode.svg', lowerThird({ variant: 'episode', kicker: 'EPISODE 01', title: 'THE QUIET AUCTION' }),
+  { file: 'lower-third-episode-1920x240.png', width: 1920, height: 240 });
+add('lower-third-live.svg', lowerThird({ variant: 'live', title: 'TOWN HALL: THE HOUSING BUDGET' }),
+  { file: 'lower-third-live-1920x240.png', width: 1920, height: 240 });
+
+/* ---- 5. End screen ----------------------------------------------- */
+add('end-screen.svg', endScreen({ width: 1920, height: 1080 }),
+  { file: 'end-screen-1920x1080.png', width: 1920, height: 1080 });
+
+/* ---- 6. Intro animation ------------------------------------------ */
+add('intro.svg', intro({ width: 1920, height: 1080 }));
+add('intro-preview.html', require('./src/intro-preview').introPreview({}));
+
+/* ---- 7. Thumbnail system ----------------------------------------- */
+// The six headlines the system is built around, one template each.
+const { HEADLINES } = require('./src/thumbnail');
+const THUMB_VARIANTS = {
+  'EXPOSED':            { kicker: 'JSA INVESTIGATION',   variant: 'alert' },
+  'WHO PROFITS':        { kicker: 'FOLLOW THE MONEY',    variant: 'default' },
+  'FOLLOW THE MONEY':   { kicker: 'JSA INVESTIGATION',   variant: 'investigation' },
+  'THEY LIED':          { kicker: 'DOCUMENTED',         variant: 'breaking' },
+  'WATCH THIS':         { kicker: 'JUST RELEASED',      variant: 'default' },
+  'ACCOUNTABILITY NOW': { kicker: 'THE WEEK IN REVIEW', variant: 'breaking' }
+};
+HEADLINES.forEach(h => {
+  const v = THUMB_VARIANTS[h] || { kicker: 'JSA INVESTIGATION', variant: 'default' };
+  const slug = h.toLowerCase().replace(/[^a-z0-9]+/g, '-').replace(/^-|-$/g, '');
+  add('thumb-' + slug + '.svg',
+    thumbnail({ headline: h, kicker: v.kicker, variant: v.variant }),
+    { file: 'thumb-' + slug + '-1280x720.png', width: 1280, height: 720 });
+});
+
+// Blank template: subject dropzone and label visible, headline reserved.
+add('thumb-template.svg',
+  thumbnail({ headline: 'YOUR HEADLINE', kicker: 'JSA INVESTIGATION', variant: 'default' }),
+  { file: 'thumb-template-1280x720.png', width: 1280, height: 720 });
+
+// Contact sheet of the whole set.
+add('thumb-contact-sheet.svg', require('./src/thumbnail-sheet').contactSheet(),
+  { file: 'thumb-contact-sheet.png', width: 1300, height: 4676, background: '#0B0B0F' });
+
+/* ---- 7b. Public copies used by the channel page ------------------ */
+fs.mkdirSync(path.join(__dirname, 'public'), { recursive: true });
+fs.copyFileSync(path.join(OUT, 'logo-crest.svg'), path.join(__dirname, 'public', 'crest.svg'));
+fs.copyFileSync(path.join(OUT, 'watermark.svg'), path.join(__dirname, 'public', 'watermark.svg'));
+console.log('  svg  brand/public/crest.svg');
+console.log('  svg  brand/public/watermark.svg');
+
+/* ---- 8. Avatar sizes (YouTube wants 800x800) --------------------- */
+[800, 400, 256, 128, 64].forEach(sz => {
+  pngJobs.push({
+    svg: crest({ size: sz }),
+    out: path.join(OUT, 'avatar-' + sz + '.png'),
+    opts: { width: sz, height: sz }
+  });
+});
+
+/* ---- 9. Favicon / app icon --------------------------------------- */
+add('icon-192.svg', crest({ size: 512, idPrefix: 'I' }),
+  { file: 'icon-192.png', width: 192, height: 192 });
+add('icon-512.svg', crest({ size: 512, idPrefix: 'I5' }),
+  { file: 'icon-512.png', width: 512, height: 512 });
+
+/* ---- 10. Manifest ----------------------------------------------- */
+const manifest = {
+  brand: 'Justice Society of Activism',
+  generated: new Date().toISOString(),
+  palette: {
+    midnight: '#0B0B0F', red: '#E11937', gold: '#D4AF37', blue: '#00AEEF'
+  },
+  assets: assets.map(a => ({
+    svg: a.name,
+    png: a.png ? a.png.file : null,
+    size: a.png ? a.png.width + 'x' + a.png.height : null
+  }))
+};
+fs.writeFileSync(path.join(OUT, 'manifest.json'), JSON.stringify(manifest, null, 2));
+console.log('  json out/manifest.json');
+
+/* ---- PNG rendering ---------------------------------------------- */
+if (WANT_PNG) {
+  const { renderBatch } = require('./src/render');
+  const jobs = [];
+
+  assets.forEach(a => {
+    if (!a.png) return;
+    jobs.push({
+      svg: a.svg,
+      out: path.join(OUT, a.png.file),
+      opts: Object.assign({ width: a.png.width, height: a.png.height }, a.png)
+    });
+  });
+  pngJobs.forEach(j => jobs.push(j));
+
+  console.log('\nRendering ' + jobs.length + ' PNG files...');
+  renderBatch(jobs)
+    .then(files => {
+      files.forEach(f => console.log('  png  ' + path.relative(process.cwd(), f)));
+      console.log('\nDone.');
+    })
+    .catch(e => { console.error('PNG rendering failed:', e.message); process.exit(1); });
+} else {
+  console.log('\nDone (SVG only). Re-run with --png to render PNGs.');
+}

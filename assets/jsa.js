@@ -214,7 +214,7 @@ function videoCard(v, i){
       <span class="hov"><span class="circle">${svg(I.play)}</span></span>
     </div>
     <div class="cmeta">
-      <img src="brand/avatar.svg" alt="${CHANNEL.name}">
+      <img src="brand/public/crest.svg" alt="${CHANNEL.name}">
       <div style="min-width:0">
         <h4>${esc(v.t)}</h4>
         <p class="ch"><b>${CHANNEL.name}</b></p>
@@ -250,7 +250,7 @@ function postCard(p, i){
     `<div class="opt" data-poll="${i}" data-oi="${oi}"><span class="fill" style="width:${(o[1]/p.poll.opts[0][1]*100).toFixed(1)}%"></span>
       <span>${esc(o[0])}</span><span class="pct">${Math.round(o[1]/p.poll.opts.reduce((a,b)=>a+b[1],0)*100)}%</span></div>`).join('')}</div>` : '';
   return `<article class="post">
-    <div class="ph"><img src="brand/avatar.svg" alt=""><div><b>${esc(p.ch)}</b><span>${p.ago}</span></div></div>
+    <div class="ph"><img src="brand/public/crest.svg" alt=""><div><b>${esc(p.ch)}</b><span>${p.ago}</span></div></div>
     <p>${esc(p.body)}</p>${poll}
     <div class="acts">
       <button>${svg(I.heart)}${fmt(p.likes)}</button>
@@ -266,7 +266,7 @@ function liveCard(l, i){
       ${l.live?'<span class="badge">Scheduled</span>':'<span class="badge gold">Replay</span>'}
       <span class="dur">${l.live?l.time:'VOD'}</span>
       <span class="hov"><span class="circle">${svg(I.play)}</span></span></div>
-    <div class="cmeta"><img src="brand/avatar.svg" alt=""><div style="min-width:0">
+    <div class="cmeta"><img src="brand/public/crest.svg" alt=""><div style="min-width:0">
       <h4>${esc(l.t)}</h4><p class="ch">${esc(l.s)}</p><p class="ch">${l.d} • ${l.live?'Live stream':'Archived'}</p>
     </div></div></article>`;
 }
@@ -289,7 +289,7 @@ function renderHome(){
 
   $('#pulse').innerHTML = `
     <div style="display:flex;gap:10px;align-items:center;margin-bottom:14px">
-      <img src="brand/avatar.svg" alt="" style="width:40px;height:40px;border-radius:50%">
+      <img src="brand/public/crest.svg" alt="" style="width:40px;height:40px;border-radius:50%">
       <div style="flex:1"><b style="font-size:13.5px">This week on the channel</b>
       <div style="color:var(--dim);font-size:12.5px">412 new members joined</div></div>
     </div>
