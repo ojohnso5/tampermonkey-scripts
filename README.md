@@ -1,8 +1,13 @@
-# tampermonkey-scripts
-Collection of Tampermonkey userscripts for automation
-# Tampermonkey Scripts Collection
+# Justice Society of Activism — Channel Toolkit
 
-A collection of Tampermonkey userscripts for automation and web enhancement by ojohnso5.
+Brand package, channel page and YouTube Studio tooling for
+**Justice Society of Activism** (<https://www.youtube.com/@JusticeSocietyofActivism>).
+
+Start here: **[brand/SETUP.html](brand/SETUP.html)** — open it in a browser and
+follow the checklist to publish the channel.
+
+Legacy automation scripts (bionic reader, labor tracking, matome, auto fixer)
+were removed; they remain in git history if ever needed.
 
 ## 🚀 Quick Install
 
@@ -12,9 +17,6 @@ Click any script link below to install directly in Tampermonkey:
 
 | Script | Description | Install Link | Version |
 |--------|-------------|--------------|---------|
-| **Auto Fixer** | Automatically fixes common web issues with AWS & Power Automate integration | [Install](https://raw.githubusercontent.com/ojohnso5/tampermonkey-scripts/main/scripts/tampermonkey-auto-fixer.user.js) | 1.0.0 |
-| **Excel AWS Integration** | Connects Excel with AWS services | [Install](https://raw.githubusercontent.com/ojohnso5/tampermonkey-scripts/main/scripts/excel-aws-integration.user.js) | 1.0.0 |
-| **Power Automate Helper** | Enhances Power Automate workflows | [Install](https://raw.githubusercontent.com/ojohnso5/tampermonkey-scripts/main/scripts/powerautomate-helper.user.js) | 1.0.0 |
 | **Justice Society of Activism — Channel Studio** | Composer for videos / Shorts / Reels / short films, revenue planner, branding kit, and optional brand styling on your own YouTube channel page | [Install](https://raw.githubusercontent.com/ojohnso5/tampermonkey-scripts/main/scripts/justice-society-studio.user.js) | 1.0.0 |
 
 ### Static Pages
@@ -167,4 +169,22 @@ This keeps the account safe and every upload traceable to a real person.
 4. **Scripts auto-update** when changes are pushed
 
 ## 📁 Repository Structure
+
+```
+brand/
+  SETUP.html            double-click setup wizard (no install needed)
+  setup-wizard.js       CLI version of the wizard (needs Node)
+  build.js              regenerates every asset
+  BRAND-IDENTITY.md     the master brand document
+  BRAND-GUIDELINES.md   usage rules per asset
+  src/                  the generative sources (palette, globe, hero, crest,
+                        banner, thumbnail, end screen, intro, materials)
+  out/                  the built deliverables (SVG, PNG, MP4)
+  channel-kit/          numbered, upload-ready copies of the channel files
+assets/                 the standalone channel page styles + logic
+scripts/
+  justice-society-studio.user.js   Tampermonkey studio for youtube.com
+justice-society.html    the channel landing page
+youtube-page.html       generic YouTube-style page
+```
 
