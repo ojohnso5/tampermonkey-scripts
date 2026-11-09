@@ -80,6 +80,26 @@
   No installation required — just follow the steps below. All files are in the <code>brand/out/</code> folder.
 </div>
 
+<div class="section" style="border-color:var(--gold)">
+  <h2>0. Your Channel Kit</h2>
+  <p style="color:var(--dim);margin:0 0 12px">Every file you need is copied, numbered and upload-ready in
+  <code>brand/channel-kit/</code>. Open that folder in File Explorer and work down the list.</p>
+  <table style="width:100%;border-collapse:collapse;font-size:13.5px">
+    <tr><td style="padding:6px 8px;border-bottom:1px solid var(--line)"><code>01-profile-picture.png</code></td><td style="padding:6px 8px;border-bottom:1px solid var(--line);color:var(--dim)">Branding → Picture</td></tr>
+    <tr><td style="padding:6px 8px;border-bottom:1px solid var(--line)"><code>02-channel-banner.png</code></td><td style="padding:6px 8px;border-bottom:1px solid var(--line);color:var(--dim)">Branding → Banner image</td></tr>
+    <tr><td style="padding:6px 8px;border-bottom:1px solid var(--line)"><code>03-video-watermark.png</code></td><td style="padding:6px 8px;border-bottom:1px solid var(--line);color:var(--dim)">Branding → Video watermark</td></tr>
+    <tr><td style="padding:6px 8px;border-bottom:1px solid var(--line)"><code>04-intro-animation.mp4</code></td><td style="padding:6px 8px;border-bottom:1px solid var(--line);color:var(--dim)">First 5s of every video (editor)</td></tr>
+    <tr><td style="padding:6px 8px;border-bottom:1px solid var(--line)"><code>05-end-screen.png</code></td><td style="padding:6px 8px;border-bottom:1px solid var(--line);color:var(--dim)">Last 20s (editor) + Studio end screen</td></tr>
+    <tr><td style="padding:6px 8px;border-bottom:1px solid var(--line)"><code>06 / 07-lower-third*.png</code></td><td style="padding:6px 8px;border-bottom:1px solid var(--line);color:var(--dim)">Overlay (editor)</td></tr>
+    <tr><td style="padding:6px 8px"><code>08 / 09-thumbnail*.png</code></td><td style="padding:6px 8px;color:var(--dim)">Per-video upload</td></tr>
+  </table>
+  <p style="margin:14px 0 0;font-size:13.5px">
+    <strong style="color:var(--gold)">Also in the kit:</strong>
+    <code>CHANNEL-METADATA.md</code> — description, keywords, links, upload defaults, ready to paste.
+    <code>FIRST-VIDEO.md</code> — title, description, tags, chapters, pinned comment for your first upload.
+  </p>
+</div>
+
 <div class="progress">
   <div class="progress-bar"><i id="progressFill" style="width:0%"></i></div>
   <div class="progress-text" id="progressText">0 / 9 steps</div>
@@ -93,7 +113,7 @@
     <div class="num" data-step="1">1</div>
     <div class="content">
       <h3>Upload Profile Picture</h3>
-      <p>File: <code>brand/out/avatar-800.png</code> (800×800, 665KB)</p>
+      <p>File: <code>brand/channel-kit/01-profile-picture.png</code> (800×800, 665KB)</p>
       <p><a href="https://studio.youtube.com/channel/UCxuSW9Si0AGLCk_tM6b1SQA/customization/branding" target="_blank">→ Open YouTube Studio Branding page</a></p>
       <p style="margin-top:8px">Click <strong>Change</strong> under Picture, select the file, click <strong>Done</strong> → <strong>Publish</strong></p>
     </div>
@@ -103,7 +123,7 @@
     <div class="num" data-step="2">2</div>
     <div class="content">
       <h3>Upload Channel Banner</h3>
-      <p>File: <code>brand/out/banner-2560x1440.png</code> (2560×1440, 4MB)</p>
+      <p>File: <code>brand/channel-kit/02-channel-banner.png</code> (2560×1440, 4MB)</p>
       <p><a href="https://studio.youtube.com/channel/UCxuSW9Si0AGLCk_tM6b1SQA/customization/branding" target="_blank">→ Open YouTube Studio Branding page</a></p>
       <p style="margin-top:8px">Click <strong>Change</strong> under Banner image, select the file. The wordmark and crest are in the safe area so they show on all devices.</p>
     </div>
@@ -155,7 +175,7 @@ Press inquiries: press@justicesociety.org</div>
     <div class="num" data-step="6">6</div>
     <div class="content">
       <h3>Upload Watermark</h3>
-      <p>File: <code>brand/out/channel-watermark-150.png</code> (150×150, 22KB)</p>
+      <p>File: <code>brand/channel-kit/03-video-watermark.png</code> (150×150, 22KB)</p>
       <p><a href="https://studio.youtube.com/channel/UCxuSW9Si0AGLCk_tM6b1SQA/customization/branding" target="_blank">→ Open YouTube Studio Branding page</a></p>
       <p style="margin-top:8px">Scroll to <strong>Video watermark</strong>, click <strong>Upload</strong>, select the file. Set display time to <strong>End of video</strong> or <strong>Custom: 0:15 to End</strong>. YouTube makes it automatically clickable.</p>
     </div>
@@ -218,7 +238,7 @@ Press inquiries: press@justicesociety.org</div>
     <div class="num">🎬</div>
     <div class="content">
       <h3>Intro Animation</h3>
-      <p>File: <code>intro-1920x1080.mp4</code> (5 seconds, H.264)</p>
+      <p>File: <code>04-intro-animation.mp4</code> (5 seconds, H.264)</p>
       <p>Import into your video editor and place at the start of your timeline.</p>
     </div>
   </div>
@@ -229,8 +249,8 @@ Press inquiries: press@justicesociety.org</div>
       <h3>Lower-Thirds</h3>
       <p>Overlay these at the bottom of your video in your editor:</p>
       <ul style="margin:8px 0 0 20px;color:var(--dim);font-size:13.5px">
-        <li><code>lower-third-episode-1920x240.png</code> — for episodes</li>
-        <li><code>lower-third-live-1920x240.png</code> — for live streams</li>
+        <li><code>06-lower-third-episode.png</code> — for episodes</li>
+        <li><code>07-lower-third-live.png</code> — for live streams</li>
       </ul>
     </div>
   </div>
@@ -239,7 +259,7 @@ Press inquiries: press@justicesociety.org</div>
     <div class="num">🎯</div>
     <div class="content">
       <h3>End Screen</h3>
-      <p>File: <code>end-screen-1920x1080.png</code></p>
+      <p>File: <code>05-end-screen.png</code></p>
       <p>Use as the last 20 seconds of your video, then add clickable elements in Studio → End screen.</p>
     </div>
   </div>
